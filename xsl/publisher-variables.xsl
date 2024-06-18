@@ -1208,7 +1208,8 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
 <!-- WeBWorK Options -->
 <!-- ############### -->
 
-<!-- WeBWorK server location and credentials for the daemon course -->
+<!-- WeBWorK server location and credentials which might be for a webwork2 -->
+<!-- course or might be for an instance of the static renderer             -->
 <xsl:variable name="webwork-server">
     <xsl:apply-templates select="$publisher-attribute-options/webwork/pi:pub-attribute[@name='server']" mode="set-pubfile-variable"/>
 </xsl:variable>
@@ -1234,6 +1235,15 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:apply-templates select="$publisher-attribute-options/webwork/pi:pub-attribute[@name='task-reveal']" mode="set-pubfile-variable"/>
 </xsl:variable>
 
+<!-- How to process PG for static outut -->
+<xsl:variable name="webwork-static-processing">
+    <xsl:apply-templates select="$publisher-attribute-options/webwork/pi:pub-attribute[@name='static-processing']" mode="set-pubfile-variable"/>
+</xsl:variable>
+
+<!-- How to process PG for interactive outut -->
+<xsl:variable name="webwork-interactive-processing">
+    <xsl:apply-templates select="$publisher-attribute-options/webwork/pi:pub-attribute[@name='interactive-processing']" mode="set-pubfile-variable"/>
+</xsl:variable>
 
 <!-- WeBWork problem representations are formed by Python routines  -->
 <!-- in the   pretext.py  module that communicates with a WeBWorK   -->
@@ -3172,6 +3182,8 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
         <pi:pub-attribute name="user" default="anonymous" freeform="yes"/>
         <pi:pub-attribute name="userpassword" default="anonymous" freeform="yes"/>
         <pi:pub-attribute name="task-reveal" default="all" options="preceding-correct"/>
+        <pi:pub-attribute name="static-processing" default="webwork2" options="local renderer"/>
+        <pi:pub-attribute name="interactive-processing" default="webwork2" options="renderer"/>
     </webwork>
     <revealjs>
         <appearance>
