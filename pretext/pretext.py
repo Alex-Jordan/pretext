@@ -1181,7 +1181,7 @@ def webwork_to_xml(
             "user": "anonymous",
             "passwd": "anonymous",
             "disableCookies": '1',
-            "renderapi": "https://pg-renderer.aimath.org"
+            "renderapi": "https://webwork-dev.aimath.org/renderer"
         }
         static_processing = 'webwork2'
         interactive_processing = 'webwork2'
@@ -1455,7 +1455,7 @@ def webwork_to_xml(
             }
             server_params.update(server_params_source)
 
-            response = renderer_session.post(renderapi, data=server_params)
+            response = renderer_session.post(renderapi + '/render-ptx', data=server_params)
             response = response.text
 
         else:
