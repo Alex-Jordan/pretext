@@ -244,6 +244,9 @@
         <xsl:when test="statement|task">
             <xsl:value-of select="concat($generated-directory, 'webwork/pg/')"/>
             <xsl:apply-templates select="." mode="directory-path" />
+            <xsl:if test="parent::project">
+                <xsl:text>Project-</xsl:text>
+            </xsl:if>
             <xsl:apply-templates select="parent::exercise" mode="numbered-title-filesafe" />
             <xsl:text>.pg</xsl:text>        
         </xsl:when>
