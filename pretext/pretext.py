@@ -1336,6 +1336,54 @@ def webwork_to_xml(
             )
         log.info(msg)
 
+        # If and only if the server is version 2.16, we adjust PG code to use PGtikz.pl
+        # instead of PGlateximage.pl
+        if webwork2_major_version == 2 and webwork2_minor_version == 16 and origin[problem] == "generated":
+            pgdense[problem] = pgdense[problem].replace('PGlateximage.pl','PGtikz.pl')
+            pgdense[problem] = pgdense[problem].replace('createLaTeXImage','createTikZImage')
+            pgdense[problem] = pgdense[problem].replace('BEGIN_LATEX_IMAGE','BEGIN_TIKZ')
+            pgdense[problem] = pgdense[problem].replace('END_LATEX_IMAGE','END_TIKZ')
+            pghuman[problem] = pghuman[problem].replace('PGlateximage.pl','PGtikz.pl')
+            pghuman[problem] = pghuman[problem].replace('createLaTeXImage','createTikZImage')
+            pghuman[problem] = pghuman[problem].replace('BEGIN_LATEX_IMAGE','BEGIN_TIKZ')
+            pghuman[problem] = pghuman[problem].replace('END_LATEX_IMAGE','END_TIKZ')
+            # We crudely remove tikzpicture environment delimiters
+            pgdense[problem] = pgdense[problem].replace('\\begin{tikzpicture}','')
+            pgdense[problem] = pgdense[problem].replace('\\end{tikzpicture}','')
+            pghuman[problem] = pghuman[problem].replace('\\begin{tikzpicture}','')
+            pghuman[problem] = pghuman[problem].replace('\\end{tikzpicture}','')
+
+        # The code in pgdense[problem] may have `$refreshCachedImages=1;`
+        # We want to keep this for the code that is sent to the server for static harvesting,
+        # but kill this for the code that is used repeatedly by embedded problems in HTML
+        # So here we branch a copy for embedding where we kill `$refreshCachedImages=1;`
+        # But we can't literally just remove that, since an author may have used something
+        # like `$refreshCachedImages  =  'true' ;` so instead, we change `$refreshCachedImages`
+        # to something inert
+        if origin[problem] == "generated":
+            embed_problem = re.sub(r'(\$refreshCachedImages)(?![\w\d])', r'\1Inert', pgdense[problem])
+
+        # make base64 for PTX problems for webwork prior to 2.19
+        if origin[problem] == "generated":
+            if ww_reps_version == "2" and webwork2_minor_version < 19:
+                pgbase64 = base64.b64encode(bytes(pgdense[problem], "utf-8")).decode(
+                    "utf-8"
+                )
+                embed_problem_base64 = base64.b64encode(bytes(embed_problem, "utf-8")).decode(
+                    "utf-8"
+                )
+            elif ww_reps_version == "1":
+                pgbase64 = {}
+                for hint_sol in [
+                    "hint_yes_solution_yes",
+                    "hint_yes_solution_no",
+                    "hint_no_solution_yes",
+                    "hint_no_solution_no",
+                ]:
+                    pgbase64[hint_sol] = base64.b64encode(
+                        bytes(pgdense[hint_sol][problem], "utf-8")
+                    )
+
         if static_processing == 'local' and origin[problem] != 'webwork2':
             pgscript = os.path.join(get_ptx_path(), 'script', 'webwork', 'pg-ptx.pl')
             perl_executable_cmd = get_executable_cmd('perl')[0]
@@ -1400,54 +1448,6 @@ def webwork_to_xml(
             response = response.text
 
         else:
-            # If and only if the server is version 2.16, we adjust PG code to use PGtikz.pl
-            # instead of PGlateximage.pl
-            if webwork2_major_version == 2 and webwork2_minor_version == 16 and origin[problem] == "generated":
-                pgdense[problem] = pgdense[problem].replace('PGlateximage.pl','PGtikz.pl')
-                pgdense[problem] = pgdense[problem].replace('createLaTeXImage','createTikZImage')
-                pgdense[problem] = pgdense[problem].replace('BEGIN_LATEX_IMAGE','BEGIN_TIKZ')
-                pgdense[problem] = pgdense[problem].replace('END_LATEX_IMAGE','END_TIKZ')
-                pghuman[problem] = pghuman[problem].replace('PGlateximage.pl','PGtikz.pl')
-                pghuman[problem] = pghuman[problem].replace('createLaTeXImage','createTikZImage')
-                pghuman[problem] = pghuman[problem].replace('BEGIN_LATEX_IMAGE','BEGIN_TIKZ')
-                pghuman[problem] = pghuman[problem].replace('END_LATEX_IMAGE','END_TIKZ')
-                # We crudely remove tikzpicture environment delimiters
-                pgdense[problem] = pgdense[problem].replace('\\begin{tikzpicture}','')
-                pgdense[problem] = pgdense[problem].replace('\\end{tikzpicture}','')
-                pghuman[problem] = pghuman[problem].replace('\\begin{tikzpicture}','')
-                pghuman[problem] = pghuman[problem].replace('\\end{tikzpicture}','')
-
-            # The code in pgdense[problem] may have `$refreshCachedImages=1;`
-            # We want to keep this for the code that is sent to the server for static harvesting,
-            # but kill this for the code that is used repeatedly by embedded problems in HTML
-            # So here we branch a copy for embedding where we kill `$refreshCachedImages=1;`
-            # But we can't literally just remove that, since an author may have used something
-            # like `$refreshCachedImages  =  'true' ;` so instead, we change `$refreshCachedImages`
-            # to something inert
-            if origin[problem] == "generated":
-                embed_problem = re.sub(r'(\$refreshCachedImages)(?![\w\d])', r'\1Inert', pgdense[problem])
-
-            # make base64 for PTX problems for webwork prior to 2.19
-            if origin[problem] == "generated":
-                if ww_reps_version == "2" and webwork2_minor_version < 19:
-                    pgbase64 = base64.b64encode(bytes(pgdense[problem], "utf-8")).decode(
-                        "utf-8"
-                    )
-                    embed_problem_base64 = base64.b64encode(bytes(embed_problem, "utf-8")).decode(
-                        "utf-8"
-                    )
-                elif ww_reps_version == "1":
-                    pgbase64 = {}
-                    for hint_sol in [
-                        "hint_yes_solution_yes",
-                        "hint_yes_solution_no",
-                        "hint_no_solution_yes",
-                        "hint_no_solution_no",
-                    ]:
-                        pgbase64[hint_sol] = base64.b64encode(
-                            bytes(pgdense[hint_sol][problem], "utf-8")
-                        )
-
             # Construct URL to get static version from server
             # WW server can react to a
             #   URL of a problem stored there already
