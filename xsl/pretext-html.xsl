@@ -10055,7 +10055,13 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
             </xsl:apply-templates>
         </xsl:attribute>
         <xsl:attribute name="data-origin">
-            <xsl:value-of select="rendering-data/@problemSource"/>
+            <xsl:value-of select="rendering-data/@origin"/>
+        </xsl:attribute>
+        <xsl:attribute name="data-renderer">
+            <xsl:value-of select="rendering-data/@renderer"/>
+        </xsl:attribute>
+        <xsl:attribute name="processing">
+            <xsl:value-of select="rendering-data/@processing"/>
         </xsl:attribute>
         <xsl:choose>
             <xsl:when test="rendering-data/@problemSource">

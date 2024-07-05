@@ -13,6 +13,8 @@
 async function handleWW(ww_id, action) {
     const ww_container = document.getElementById(ww_id);
     const ww_domain = ww_container.dataset.domain;
+    const ww_renderer = ww_container.dataset.renderer;
+    const ww_processing = ww_container.dataset.processing;
     const ww_origin = ww_container.dataset.origin;
     const ww_problemSource = ww_container.dataset.problemsource;
     const ww_sourceFilePath = ww_container.dataset.sourcefilepath;
@@ -73,8 +75,14 @@ async function handleWW(ww_id, action) {
         ww_container.tabIndex = -1;
     }
 
-    let url = new URL(ww_domain + '/webwork2/render_rpc');
+    let url;
+    if (ww_processing == 'webwork2') {
+        url = new URL(ww_domain + '/webwork2/render_rpc');
+    } else if (ww_processing == 'renderer') {
+        url = new URL(ww_renderer + '/renderapi');
+    }
     let formData = new FormData();
+    console.log(ww_renderer)
 
     if (action == 'check') {
         const iframe = ww_container.querySelector('.problem-iframe');
