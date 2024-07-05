@@ -1100,16 +1100,18 @@ def webwork_to_xml(
     # build necessary variables by reading xml with lxml
     extracted_pg_xml = ET.parse(extracted_pg_filename).getroot()
     localization = extracted_pg_xml.find("localization").text
+    webwork2_server = extracted_pg_xml.find("server-params-pub").find("webwork2-domain").text
+    renderer_server = extracted_pg_xml.find("server-params-pub").find("renderapi").text
     # The only way the next block does not execute is if there were no publication file at all.
     no_publication_file = False
-    if extracted_pg_xml.find("server-params-pub").find("webwork2-domain") is not None:
+    if webwork2_server is not None:
         server_params_pub = {
-            "webwork2_domain": extracted_pg_xml.find("server-params-pub").find("webwork2-domain").text,
+            "webwork2_domain": webwork2_server,
             "courseID": extracted_pg_xml.find("server-params-pub").find("course-id").text,
             "user": extracted_pg_xml.find("server-params-pub").find("user-id").text,
             "passwd": extracted_pg_xml.find("server-params-pub").find("password").text,
             "disableCookies": '1',
-            "renderapi": extracted_pg_xml.find("server-params-pub").find("renderapi").text
+            "renderapi": renderer_server
         }
         static_processing = extracted_pg_xml.find("processing").attrib["static"]
         interactive_processing = extracted_pg_xml.find("processing").attrib["interactive"]
@@ -1950,10 +1952,16 @@ def webwork_to_xml(
                     else:
                         source_value = path[problem]
 
+            processing_type = interactive_processing
+            if origin[problem] == 'webwork2':
+                processing_type = 'webwork2'
+
             rendering_data = ET.SubElement(webwork_reps, "rendering-data")
             rendering_data.set(source_key, source_value)
             rendering_data.set("origin", origin[problem])
             rendering_data.set("domain", webwork2_domain)
+            rendering_data.set("renderer", renderer_server)
+            rendering_data.set("processing", processing_type)
             rendering_data.set("course-id", courseID)
             rendering_data.set("user-id", user)
             rendering_data.set("course-password", passwd)
