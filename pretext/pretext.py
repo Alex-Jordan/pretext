@@ -1298,11 +1298,11 @@ def webwork_to_xml(
             pghuman[problem.get("id")] = problem.find("pghuman").text
             # in the past pgdense was minimized pg; now we do not bother and just use pghuman
             if webwork2_major_version == 2 and webwork2_minor_version >= 19:
-                pgdense[problem.get("id")] = pghuman[problem.get("id")]
-                pgdense["hint_yes_solution_yes"][problem.get("id")] = pghuman[problem.get("id")]
-                pgdense["hint_yes_solution_no"][problem.get("id")]  = pghuman[problem.get("id")]
-                pgdense["hint_no_solution_yes"][problem.get("id")]  = pghuman[problem.get("id")]
-                pgdense["hint_no_solution_no"][problem.get("id")]   = pghuman[problem.get("id")]
+                pgdense[problem.get("id")] = problem.find("pgdense").text
+                pgdense["hint_yes_solution_yes"][problem.get("id")] = pgdense[problem.get("id")]
+                pgdense["hint_yes_solution_no"][problem.get("id")]  = pgdense[problem.get("id")]
+                pgdense["hint_no_solution_yes"][problem.get("id")]  = pgdense[problem.get("id")]
+                pgdense["hint_no_solution_no"][problem.get("id")]   = pgdense[problem.get("id")]
             else:
                 for dense in problem.iter("pgdense"):
                     if dense.get("hint")=="yes" and dense.get("solution")=="yes":
@@ -1481,7 +1481,7 @@ def webwork_to_xml(
                     elif origin[problem] == "external":
                         server_params_source = {"rawProblemSource":pathlib.Path(path[problem]).read_text()}
                     else:
-                        server_params_source = {"rawProblemSource":pghuman[problem]}
+                        server_params_source = {"rawProblemSource":pgdense[problem]}
                 else:
                     server_params_source = (
                         ("sourceFilePath", path[problem])
