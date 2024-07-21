@@ -10060,7 +10060,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:attribute name="data-renderer">
             <xsl:value-of select="rendering-data/@renderer"/>
         </xsl:attribute>
-        <xsl:attribute name="processing">
+        <xsl:attribute name="data-processing">
             <xsl:value-of select="rendering-data/@processing"/>
         </xsl:attribute>
         <xsl:choose>

@@ -1594,6 +1594,9 @@
     <xsl:variable name="width">
         <xsl:apply-templates select="." mode="get-width-percentage" />
     </xsl:variable>
+    <xsl:if test="preceding-sibling::p|ancestor::sidebyside">
+        <xsl:call-template name="potential-list-indent" />
+    </xsl:if>
     <xsl:text>[@image(insertGraph(</xsl:text>
     <xsl:apply-templates select="." mode="pg-name"/>
     <xsl:text>), width=&gt;</xsl:text>
@@ -1741,7 +1744,7 @@
 <!-- inside a list, special handling                                      -->
 <xsl:template match="p">
     <xsl:param name="b-human-readable" />
-    <xsl:if test="preceding-sibling::p and not(child::*[1][self::ol] or child::*[1][self::ul])">
+    <xsl:if test="preceding-sibling::p and not(child::*[1][self::ol]|child::*[1][self::ul]) or ancestor::sidebyside">
         <xsl:call-template name="potential-list-indent" />
     </xsl:if>
     <xsl:apply-templates>
@@ -1751,35 +1754,143 @@
     <xsl:if test="parent::li and not(following-sibling::*) and not(following::li)">
         <xsl:text>   </xsl:text>
     </xsl:if>
+    <xsl:text>&#xa;</xsl:text>
     <!-- Blank line required or PGML will treat two adjacent p as one -->
-    <xsl:if test="not(parent::li) or following-sibling::* or parent::li/following-sibling::*">
-        <xsl:text>&#xa;</xsl:text>
+    <xsl:if test="not(parent::sidebyside) and (not(parent::li|parent::stack) or following-sibling::* or parent::li/following-sibling::*)">
         <xsl:text>&#xa;</xsl:text>
     </xsl:if>
 </xsl:template>
 
+<!-- ################# -->
+<!-- Image and Tabular -->
+<!-- ################# -->
+
 <!-- Some common wrappers for image and tabular   -->
-<!-- Formerly this template was for sidebyside    -->
-<!-- And we leave it to also work on a sidebyside -->
-<!-- for backwards compatibility. However, such   -->
-<!-- use will be caught by a deprectation warning -->
-<!-- as well as fail a schema validation.         -->
-<xsl:template match="image|tabular|sidebyside">
+<xsl:template match="image|tabular">
     <xsl:param name="b-human-readable" />
-    <xsl:if test="preceding-sibling::p">
-        <xsl:call-template name="potential-list-indent" />
-    </xsl:if>
-    <xsl:if test="not(ancestor::li)">
+    <xsl:if test="not(ancestor::li|ancestor::sidebyside)">
         <xsl:text>&gt;&gt; </xsl:text>
     </xsl:if>
-    <xsl:apply-templates select="self::image|self::tabular|self::sidebyside/image|self::sidebyside/tabular" mode="components">
+    <xsl:apply-templates select="self::image|self::tabular" mode="components">
         <xsl:with-param name="b-human-readable" select="$b-human-readable" />
     </xsl:apply-templates>
-    <xsl:if test="not(ancestor::li)">
+    <xsl:if test="not(ancestor::li|ancestor::sidebyside)">
         <xsl:text> &lt;&lt;</xsl:text>
     </xsl:if>
     <xsl:text>&#xa;</xsl:text>
+    <xsl:if test="not(parent::sidebyside)">
+        <xsl:text>&#xa;</xsl:text>
+    </xsl:if>
+</xsl:template>
+
+<!-- ########## -->
+<!-- Sidebyside -->
+<!-- ########## -->
+
+<xsl:template match="*" mode="panel-panel">
+    <xsl:param name="b-human-readable" />
+    <xsl:param name="width" />
+    <xsl:param name="left-margin" />
+    <xsl:param name="right-margin" />
+    <xsl:param name="valign" />
+
+    <xsl:variable name="arguments">
+    </xsl:variable>
+
+    <xsl:text>    [.&#xa;</xsl:text>
+    <xsl:apply-templates select=".">
+        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
+    </xsl:apply-templates>
+    <xsl:text>    .]</xsl:text>
+    <!-- star indicates cell is at the end of a row (end of one sbs in a sbsgroup) -->
+    <xsl:if test="not(following-sibling::*)">
+        <xsl:text>*</xsl:text>
+    </xsl:if>
+    <xsl:if test="$arguments != ''">
+        <xsl:text>{</xsl:text>
+        <xsl:value-of select="$arguments"/>
+        <xsl:text>}</xsl:text>
+    </xsl:if>
     <xsl:text>&#xa;</xsl:text>
+</xsl:template>
+
+<xsl:template match="sidebyside" mode="compose-panels">
+    <xsl:param name="layout" />
+    <xsl:param name="panels" />
+
+    <xsl:variable name="arguments">
+        <xsl:choose>
+            <xsl:when test="@widths">
+                <xsl:text>align => '</xsl:text>
+                <xsl:for-each select="str:tokenize(@widths)">
+                    <xsl:text>p{</xsl:text>
+                    <xsl:call-template name="normalize-percentage">
+                        <xsl:with-param name="percentage" select="."/>>
+                    </xsl:call-template>
+                    <xsl:text>}</xsl:text>
+                </xsl:for-each>
+                <xsl:text>',</xsl:text>
+            </xsl:when>
+            <xsl:when test="@width">
+                <xsl:text>align => '*{</xsl:text>
+                <xsl:value-of select="$layout/number-panels"/>
+                <xsl:text>}{p{</xsl:text>
+                    <xsl:apply-templates select="." mode="absolute-width-inches"/>
+                <xsl:text>}}',</xsl:text>
+            </xsl:when>
+        </xsl:choose>
+        <xsl:if test="$layout/valign != 'top'">
+            <xsl:text>valign => '</xsl:text>
+            <xsl:value-of select="$layout/valign"/>
+            <xsl:text>',</xsl:text>
+        </xsl:if>
+    </xsl:variable>
+
+    <xsl:text>[#&#xa;</xsl:text>
+    <xsl:copy-of select="$panels" />
+    <xsl:text>#]*</xsl:text>
+    <xsl:if test="$arguments != ''">
+        <xsl:text>{</xsl:text>
+        <xsl:value-of select="$arguments"/>
+        <xsl:text>}</xsl:text>
+    </xsl:if>
+    <xsl:text>&#xa;&#xa;</xsl:text>
+</xsl:template>
+
+<xsl:template match="sbsgroup/sidebyside" mode="compose-panels">
+    <xsl:param name="panels" />
+    <xsl:copy-of select="$panels" />
+</xsl:template>
+
+<xsl:template match="sbsgroup">
+    <xsl:param name="b-human-readable" />
+
+    <xsl:variable name="arguments">
+        <xsl:if test="@width">
+            <xsl:text>align => 'p{</xsl:text>
+            <xsl:apply-templates select="." mode="absolute-width-inches"/>
+            <xsl:text>}*{</xsl:text>
+            <xsl:value-of select="$layout/number-panels"/>
+            <xsl:text>}',</xsl:text>
+        </xsl:if>
+        <xsl:if test="@valign and (@valign != 'top')">
+            <xsl:text>valign => '</xsl:text>
+            <xsl:value-of select="$layout/valign"/>
+            <xsl:text>',</xsl:text>
+        </xsl:if>
+    </xsl:variable>
+
+    <xsl:text>[#&#xa;</xsl:text>
+    <xsl:apply-templates select="sidebyside">
+        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
+    </xsl:apply-templates>
+    <xsl:text>#]*</xsl:text>
+    <xsl:if test="$arguments != ''">
+        <xsl:text>{</xsl:text>
+        <xsl:value-of select="$arguments"/>
+        <xsl:text>}</xsl:text>
+    </xsl:if>
+    <xsl:text>&#xa;&#xa;</xsl:text>
 </xsl:template>
 
 <!-- ######### -->
@@ -2571,7 +2682,9 @@
 
 <xsl:template match="tabular" mode="components">
     <xsl:param name="b-human-readable" />
-
+    <xsl:if test="preceding-sibling::p|ancestor::sidebyside">
+        <xsl:call-template name="potential-list-indent" />
+    </xsl:if>
     <xsl:text>[@DataTable(</xsl:text>
     <xsl:if test="$b-human-readable">
         <xsl:text>&#xa;</xsl:text>
@@ -2626,6 +2739,7 @@
             </xsl:with-param>
         </xsl:call-template>
     </xsl:if>
+    <xsl:text>&#xa;</xsl:text>
     <xsl:if test="$b-human-readable">
         <xsl:call-template name="potential-list-indent" />
     </xsl:if>
@@ -2730,7 +2844,7 @@
             <xsl:with-param name="percentage" select="@width"/>
         </xsl:call-template>
     </xsl:variable>
-    <xsl:value-of select="concat(number(substring-before($percent-width,'%')) div 100 * 6.25,in)"/>
+    <xsl:value-of select="concat(number(substring-before($percent-width,'%')) div 100 * 6.25,'in')"/>
 </xsl:template>
 
 
@@ -2783,11 +2897,21 @@
     </xsl:variable>
     <xsl:variable name="row-bottom">
         <xsl:choose>
-            <xsl:when test="parent::row/@bottom = str:tokenize('minor medium major none', ' ') and parent::row/@bottom != $tabular-bottom">
+            <xsl:when test="parent::row/@bottom = str:tokenize('minor medium major none', ' ')">
                 <xsl:value-of select="parent::row/@bottom"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="$tabular-bottom"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="cell-bottom">
+        <xsl:choose>
+            <xsl:when test="@bottom = str:tokenize('minor medium major none', ' ')">
+                <xsl:value-of select="@bottom"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$row-bottom"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
@@ -2805,7 +2929,7 @@
     </xsl:variable>
     <xsl:variable name="row-valign">
         <xsl:choose>
-            <xsl:when test="parent::row/@valign = str:tokenize('top middle bottom', ' ') and parent::row/@valign != $tabular-valign">
+            <xsl:when test="parent::row/@valign = str:tokenize('top middle bottom', ' ')">
                 <xsl:value-of select="parent::row/@valign"/>
             </xsl:when>
             <xsl:otherwise>
@@ -2878,7 +3002,7 @@
     </xsl:variable>
     <xsl:variable name="row-left">
         <xsl:choose>
-            <xsl:when test="parent::row/@left = str:tokenize('minor medium major none', ' ') and parent::row/@left != $tabular-left">
+            <xsl:when test="parent::row/@left = str:tokenize('minor medium major none', ' ')">
                 <xsl:value-of select="parent::row/@left"/>
             </xsl:when>
             <xsl:otherwise>
@@ -2900,7 +3024,7 @@
     </xsl:variable>
     <xsl:variable name="col-right">
         <xsl:choose>
-            <xsl:when test="ancestor::tabular[1]/col[$right-col]/@right = str:tokenize('minor medium major none', ' ') and ancestor::tabular[1]/col[$right-col]/@right != $tabular-right">
+            <xsl:when test="ancestor::tabular[1]/col[$right-col]/@right = str:tokenize('minor medium major none', ' ')">
                 <xsl:value-of select="ancestor::tabular[1]/col[$right-col]/@right"/>
             </xsl:when>
             <xsl:otherwise>
@@ -2926,6 +3050,8 @@
             or
             ($row-bottom != 'none' and not(preceding-sibling::cell))
             or
+            $cell-bottom != $row-bottom
+            or
             ($row-valign != $tabular-valign and not(preceding-sibling::cell))
             or
             ($row-left != $tabular-left and not(preceding-sibling::cell))
@@ -2948,11 +3074,11 @@
             <xsl:text>[PGML(</xsl:text>
             <xsl:apply-templates select="." mode="delimit"/>
             <xsl:text>),</xsl:text>
-            <!-- declare bottom if needed; note niceTables.pl does not respect bottom on an individual cell -->
+            <!-- declare rowbottom if needed -->
             <xsl:if test="$row-bottom != 'none' and not(preceding-sibling::cell)">
                 <xsl:call-template name="key-value">
                     <xsl:with-param name="b-human-readable" select="$b-human-readable"/>
-                    <xsl:with-param name="key" select="'bottom'"/>
+                    <xsl:with-param name="key" select="'rowbottom'"/>
                     <xsl:with-param name="value">
                         <xsl:call-template name="pg-hrule-specification">
                             <xsl:with-param name="width" select="$row-bottom"/>
@@ -2964,6 +3090,18 @@
                     <xsl:with-param name="b-human-readable" select="$b-human-readable"/>
                     <xsl:with-param name="key" select="'midrule'"/>
                     <xsl:with-param name="value" select="1"/>
+                </xsl:call-template>
+            </xsl:if>
+             <!-- declare bottom if needed -->
+             <xsl:if test="$cell-bottom != $row-bottom">
+                <xsl:call-template name="key-value">
+                    <xsl:with-param name="b-human-readable" select="$b-human-readable"/>
+                    <xsl:with-param name="key" select="'bottom'"/>
+                    <xsl:with-param name="value">
+                        <xsl:call-template name="pg-hrule-specification">
+                            <xsl:with-param name="width" select="$cell-bottom"/>
+                        </xsl:call-template>
+                    </xsl:with-param>
                 </xsl:call-template>
             </xsl:if>
             <!-- declare valign if needed -->
@@ -3102,7 +3240,7 @@
 <!-- Base indentation for lines of code in the middle of a list -->
 <xsl:template name="potential-list-indent">
     <xsl:call-template name="duplicate-string">
-        <xsl:with-param name="count" select="4 * (count(ancestor::ul) + count(ancestor::ol))" />
+        <xsl:with-param name="count" select="4 * (count(ancestor::ul) + count(ancestor::ol) + 2*count(ancestor::sidebyside))" />
         <xsl:with-param name="text"  select="' '" />
     </xsl:call-template>
 </xsl:template>
