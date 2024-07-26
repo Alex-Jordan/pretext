@@ -531,10 +531,18 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
     <!-- Statement -->
     <statement>
         <xsl:copy-of select="statement/node()"/>
-        <tabular>
-            <!-- provide two "col" if necessary -->
-            <xsl:apply-templates select="matches/match" mode="matching-statement"/>
-        </tabular>
+        <sidebyside widths="47% 47%" margins="0%">
+            <p>
+                <ol marker="A.">
+                    <xsl:apply-templates select="matches/match" mode="matching-premise"/>
+                </ol>
+            </p>
+            <p>
+                <ol marker="1.">
+                    <xsl:apply-templates select="matches/match" mode="matching-response"/>
+                </ol>
+            </p>
+        </sidebyside>
     </statement>
     <!-- Any authored hint, answers, solutions not derived from   -->
     <!-- problem formulation. *Before* automatic solution, so     -->
@@ -544,11 +552,33 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:copy-of select="solution"/>
     <!-- Solution -->
     <solution>
-        <tabular>
-            <!-- provide two "col" if necessary -->
-            <xsl:apply-templates select="matches/match" mode="matching-solution"/>
-        </tabular>
+        <p>
+            <ol marker="A." pi:inline="yes">
+                <xsl:apply-templates select="matches/match" mode="matching-response-number"/>
+            </ol>
+        </p>
     </solution>
+</xsl:template>
+
+<xsl:template match="exercise/matches/match" mode="matching-premise">
+    <li>
+        <xsl:copy-of select="premise/node()"/>
+    </li>
+</xsl:template>
+
+<xsl:template match="exercise/matches/match" mode="matching-response">
+    <xsl:variable name="premise-number" select="count(preceding-sibling::match) + 1"/>
+    <xsl:variable name="all-matches" select="parent::matches/match"/>
+    <li>
+        <xsl:copy-of select="$all-matches[@order = $premise-number]/response/node()"/>
+    </li>
+</xsl:template>
+
+<xsl:template match="exercise/matches/match" mode="matching-response-number">
+    <li>
+        <xsl:value-of select="@order"/>
+        <xsl:text>.</xsl:text>
+    </li>
 </xsl:template>
 
 <!-- responses re-orered according to match/@order -->
@@ -578,10 +608,14 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
             </xsl:attribute>
         </xsl:if>
         <cell>
-            <xsl:copy-of select="premise/node()"/>
+            <p>
+                <xsl:copy-of select="premise/node()"/>
+            </p>
         </cell>
         <cell>
-            <xsl:copy-of select="response/node()"/>
+            <p>
+                <xsl:copy-of select="response/node()"/>
+            </p>
         </cell>
     </row>
 </xsl:template>

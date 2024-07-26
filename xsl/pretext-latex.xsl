@@ -430,6 +430,10 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>%% the LaTeX engine is one such determinant&#xa;</xsl:text>
     <xsl:text>\usepackage{ifthen}&#xa;</xsl:text>
     <xsl:text>%% etoolbox has a variety of modern conveniences&#xa;</xsl:text>
+    <xsl:text>%% Symbols, align environment, commutative diagrams, bracket-matrix&#xa;</xsl:text>
+    <xsl:text>\usepackage{amsmath, nccmath}&#xa;</xsl:text>
+    <xsl:text>\usepackage{amscd}&#xa;</xsl:text>
+    <xsl:text>\usepackage{amssymb}&#xa;</xsl:text>
     <!-- e.g, \notblank -->
     <xsl:text>\usepackage{etoolbox}&#xa;</xsl:text>
     <xsl:text>\usepackage{ifxetex,ifluatex}&#xa;</xsl:text>
@@ -571,7 +575,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>%% begin: engine-specific capabilities&#xa;</xsl:text>
     <xsl:text>\ifthenelse{\boolean{xetex} \or \boolean{luatex}}{%&#xa;</xsl:text>
     <xsl:text>%% begin: xelatex and lualatex-specific default configuration&#xa;</xsl:text>
-    <xsl:text>\ifxetex\usepackage{xltxtra}\fi&#xa;</xsl:text>
+    <!-- <xsl:text>\ifxetex\usepackage{xltxtra}\fi&#xa;</xsl:text> -->
     <xsl:text>%% realscripts is the only part of xltxtra relevant to lualatex &#xa;</xsl:text>
     <xsl:text>\ifluatex\usepackage{realscripts}\fi&#xa;</xsl:text>
     <xsl:text>%% end:   xelatex and lualatex-specific default configuration&#xa;</xsl:text>
@@ -583,7 +587,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>%% but not with Greek, Asian languages, etc.&#xa;</xsl:text>
     <xsl:text>%% When this is not good enough, switch to the  xelatex  engine&#xa;</xsl:text>
     <xsl:text>%% where Unicode is better supported (encouraged, even)&#xa;</xsl:text>
-    <xsl:text>\usepackage[utf8]{inputenc}&#xa;</xsl:text>
+    <xsl:text>\ifxetex\else\usepackage[utf8]{inputenc}\fi&#xa;</xsl:text>
     <xsl:text>%% end: pdflatex-specific default configuration&#xa;</xsl:text>
     <xsl:text>}&#xa;</xsl:text>
     <xsl:text>%% end:   engine-specific capabilities&#xa;</xsl:text>
@@ -638,7 +642,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>%% The fontspec package is the best vehicle for using different fonts in  xelatex&#xa;</xsl:text>
     <xsl:text>%% So we load it always, no matter what a publisher or style might want&#xa;</xsl:text>
     <xsl:text>%%&#xa;</xsl:text>
-    <xsl:text>\usepackage{fontspec}&#xa;</xsl:text>
+    <xsl:text>\usepackage[math]{mathspec}</xsl:text>
     <xsl:text>%%&#xa;</xsl:text>
     <!--  -->
     <xsl:text>%% begin: xelatex main font ("font-xelatex-main" template)&#xa;</xsl:text>
@@ -781,10 +785,6 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>{microtype}&#xa;</xsl:text>
     <!--  -->
     <!--  -->
-    <xsl:text>%% Symbols, align environment, commutative diagrams, bracket-matrix&#xa;</xsl:text>
-    <xsl:text>\usepackage{amsmath}&#xa;</xsl:text>
-    <xsl:text>\usepackage{amscd}&#xa;</xsl:text>
-    <xsl:text>\usepackage{amssymb}&#xa;</xsl:text>
     <xsl:text>%% allow page breaks within display mathematics anywhere&#xa;</xsl:text>
     <xsl:text>%% level 4 is maximally permissive&#xa;</xsl:text>
     <xsl:text>%% this is exactly the opposite of AMSmath package philosophy&#xa;</xsl:text>
@@ -1142,7 +1142,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:text>%% Division exercises, not in exercise group&#xa;</xsl:text>
         <xsl:text>\tcbset{ divisionexercisestyle/.style={bwminimalstyle, runintitlestyle, exercisespacingstyle, left=5ex, breakable, before upper app={\setparstyle} } }&#xa;</xsl:text>
         <xsl:text>\newtcolorbox{divisionexercise}[4]</xsl:text>
-        <xsl:text>{divisionexercisestyle, before title={\hspace{-5ex}\makebox[5ex][l]{#1.}}, title={\notblank{#2}{#2\space}{}}, phantom={</xsl:text>
+        <xsl:text>{divisionexercisestyle, before title={\hspace*{-5ex}\makebox[5ex][l]{#1.}}, title={\notblank{#2}{#2\space}{}}, phantom={</xsl:text>
         <xsl:if test="$b-pageref">
             <xsl:text>\label{#4}</xsl:text>
         </xsl:if>
@@ -1155,7 +1155,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:text>%% Division exercises, in exercise group, no columns&#xa;</xsl:text>
         <xsl:text>\tcbset{ divisionexerciseegstyle/.style={bwminimalstyle, runintitlestyle, exercisespacingstyle, left=5ex, left skip=\egindent, breakable, before upper app={\setparstyle} } }&#xa;</xsl:text>
         <xsl:text>\newtcolorbox{divisionexerciseeg}[4]</xsl:text>
-        <xsl:text>{divisionexerciseegstyle, before title={\hspace{-5ex}\makebox[5ex][l]{#1.}}, title={\notblank{#2}{#2\space}{}}, phantom={</xsl:text>
+        <xsl:text>{divisionexerciseegstyle, before title={\hspace*{-5ex}\makebox[5ex][l]{#1.}}, title={\notblank{#2}{#2\space}{}}, phantom={</xsl:text>
         <xsl:if test="$b-pageref">
             <xsl:text>\label{#4}</xsl:text>
         </xsl:if>
@@ -1167,7 +1167,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:text>%% Division exercises, in exercise group with columns&#xa;</xsl:text>
         <xsl:text>\tcbset{ divisionexerciseegcolstyle/.style={bwminimalstyle, runintitlestyle, exercisespacingstyle, left=5ex, halign=flush left, unbreakable, before upper app={\setparstyle} } }&#xa;</xsl:text>
         <xsl:text>\newtcolorbox{divisionexerciseegcol}[4]</xsl:text>
-        <xsl:text>{divisionexerciseegcolstyle, before title={\hspace{-5ex}\makebox[5ex][l]{#1.}}, title={\notblank{#2}{#2\space}{}}, phantom={</xsl:text>
+        <xsl:text>{divisionexerciseegcolstyle, before title={\hspace*{-5ex}\makebox[5ex][l]{#1.}}, title={\notblank{#2}{#2\space}{}}, phantom={</xsl:text>
         <xsl:if test="$b-pageref">
             <xsl:text>\label{#4}</xsl:text>
         </xsl:if>
@@ -1580,7 +1580,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:text>%% But also for specifying labels (i.e. custom order) on nested lists&#xa;</xsl:text>
         <xsl:text>\usepackage</xsl:text>
         <!-- next test is simpler than necessary, only needed for 'popup' versions of @form -->
-        <xsl:if test="$b-has-webwork-var">
+        <xsl:if test="$b-has-webwork-var or //ol[pi:inline = 'yes']">
             <xsl:text>[inline]</xsl:text>
         </xsl:if>
         <xsl:text>{enumitem}&#xa;</xsl:text>
@@ -1603,7 +1603,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:text>\tcbset{ dlistyle/.style={sidebyside, sidebyside align=top seam, lower separated=false, bwminimalstyle, bottomtitle=0.75ex, after skip=1.5ex, boxsep=0pt, left=0pt, right=0pt, top=0pt, bottom=0pt} }&#xa;</xsl:text>
         <xsl:text>\tcbset{ dlinarrowstyle/.style={dlistyle, lefthand width=\dlimaxnarrowtitle, sidebyside gap=1ex, halign=flush left, righttitle=10ex} }&#xa;</xsl:text>
         <xsl:text>\tcbset{ dlimediumstyle/.style={dlistyle, lefthand width=\dlimaxmediumtitle, sidebyside gap=4ex, halign=flush right} }&#xa;</xsl:text>
-        <xsl:text>\NewDocumentEnvironment{descriptionlist}{}{\par\vspace*{1.5ex}}{\par\vspace*{1.5ex}}%&#xa;</xsl:text>
+        <xsl:text>\NewDocumentEnvironment{descriptionlist}{}{\par\vspace*{1.5ex}\setparstyle}{\par\vspace*{1.5ex}}%&#xa;</xsl:text>
         <xsl:text>%% begin enviroment has an if/then to open the tcolorbox&#xa;</xsl:text>
         <xsl:text>\NewDocumentEnvironment{dlinarrow}{mm}{%&#xa;</xsl:text>
         <xsl:text>\settowidth{\dlititlewidth}{{\textbf{#1}}}%&#xa;</xsl:text>
@@ -1760,8 +1760,8 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
                 <xsl:text>%% tcolorbox styles for sidebyside layout&#xa;</xsl:text>
                 <!-- "frame empty" is needed to counteract very faint outlines in some PDF viewers -->
                 <!-- framecol=white is inadvisable, "frame hidden" is ineffective for default skin -->
-                <xsl:text>\tcbset{ sbsstyle/.style={raster before skip=2.0ex, raster equal height=rows, raster force size=false} }&#xa;</xsl:text>
-                <xsl:text>\tcbset{ sbspanelstyle/.style={bwminimalstyle, fonttitle=\blocktitlefont} }&#xa;</xsl:text>
+                <xsl:text>\tcbset{ sbsstyle/.style={raster before skip=2.0ex, raster equal height=rows, raster force size=false,raster after skip=0.7\baselineskip} }&#xa;</xsl:text>
+                <xsl:text>\tcbset{ sbspanelstyle/.style={bwminimalstyle, fonttitle=\blocktitlefont, before upper app={\setparstyle}} }&#xa;</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
         <xsl:text>%% Enviroments for side-by-side and components&#xa;</xsl:text>
@@ -1838,7 +1838,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
             <!-- to simply condition on the appearance in the list of packages being included.        -->
             <!-- Following preserves backward-compatible behavior.                                    -->
             <xsl:otherwise>
-                <xsl:text>%% extpfeil package for certain extensible arrows,&#xa;</xsl:text>
+                <!-- <xsl:text>%% extpfeil package for certain extensible arrows,&#xa;</xsl:text>
                 <xsl:text>%% as also provided by MathJax extension of the same name&#xa;</xsl:text>
                 <xsl:text>%% NB: this package loads mtools, which loads calc, which redefines&#xa;</xsl:text>
                 <xsl:text>%%     \setlength, so it can be removed if it seems to be in the &#xa;</xsl:text>
@@ -1848,7 +1848,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
                 <xsl:text>%%     &#xa;</xsl:text>
                 <xsl:text>%%     we have had to be extra careful with variable thickness&#xa;</xsl:text>
                 <xsl:text>%%     lines in tables, and so also load this package late&#xa;</xsl:text>
-                <xsl:text>\usepackage{extpfeil}&#xa;</xsl:text>
+                <xsl:text>\usepackage{extpfeil}&#xa;</xsl:text> -->
             </xsl:otherwise>
         </xsl:choose>
     </xsl:if>
@@ -2414,7 +2414,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>\newlength{\charminwidth}\setlength{\charminwidth}{0.1em}&#xa;</xsl:text>
     <xsl:text>\newlength{\fillinheight}&#xa;</xsl:text>
     <xsl:if test="$fillin-text-style = 'shade'">
-        <xsl:text>\definecolor{fillintextshade}{gray}{0.9}</xsl:text>
+        <xsl:text>\definecolor{fillintextshade}{gray}{0.9}&#xa;</xsl:text>
     </xsl:if>
     <xsl:text>\newcommand{\fillintext}[1]{%&#xa;</xsl:text>
     <xsl:text>\setlength{\fillinmaxwidth}{#1\charmaxwidth}%&#xa;</xsl:text>
@@ -6090,7 +6090,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 <xsl:template match="ul[@pi:ww-form]">
     <xsl:choose>
         <xsl:when test="@pi:ww-form = 'popup'" >
-            <xsl:text>\quad(\begin{itemize*}[label=$\square$,leftmargin=3em,itemjoin=\hspace{1em}]&#xa;</xsl:text>
+            <xsl:text>\quad(\begin{itemize*}[label=$\square$, leftmargin=3em, itemjoin=\hspace{1em}]&#xa;</xsl:text>
             <xsl:apply-templates select="li"/>
             <xsl:text>\end{itemize*})\quad&#xa;</xsl:text>
         </xsl:when>
@@ -6099,7 +6099,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <!--     \textopenbullet, \textbigcircle (textcomp)            -->
         <!-- To adjust in preamble, see use of $b-has-webwork-var      -->
         <xsl:when test="@pi:ww-form = 'buttons'" >
-            <xsl:text>\begin{itemize}[label=$\odot$,leftmargin=3em,]&#xa;</xsl:text>
+            <xsl:text>\begin{itemize}[label=$\odot$, leftmargin=3em]&#xa;</xsl:text>
             <xsl:apply-templates select="li"/>
             <xsl:text>\end{itemize}&#xa;</xsl:text>
         </xsl:when>
@@ -6107,6 +6107,18 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <!-- description list ("dl") so we will need to wait for the    -->
         <!-- server to tag it with @pi:ww-form so we can customize it   -->
         <!-- here with a new match on dl[@pi:ww-form = 'checkboxes'].   -->
+        <xsl:when test="@pi:ww-form = 'checkboxes'" >
+            <xsl:text>\begin{itemize}[label=$\square$, leftmargin=1em</xsl:text>
+            <xsl:if test="ancestor::exercisegroup and not(parent::p/preceding-sibling::*)">
+                <xsl:text>, topsep=-\parskip, before={\vspace{-\baselineskip}}, after={\vspace{2\parskip}}</xsl:text>
+            </xsl:if>
+            <xsl:if test="ancestor::exercisegroup and parent::p/preceding-sibling::*">
+                <xsl:text>, after={\vspace{2\parskip}}</xsl:text>
+            </xsl:if>
+            <xsl:text>]&#xa;</xsl:text>
+            <xsl:apply-templates select="li"/>
+            <xsl:text>\end{itemize}&#xa;</xsl:text>
+        </xsl:when>
     </xsl:choose>
 </xsl:template>
 
@@ -6257,6 +6269,9 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
             <xsl:text>(\alph*),ref=\alph*</xsl:text>
         </xsl:otherwise>
     </xsl:choose>
+    <xsl:if test="ancestor::exercises and (not(introduction) or introduction='')">
+        <xsl:text>,topsep=-\parskip, before={\vspace{-\baselineskip}}, after={\vspace{\baselineskip}}</xsl:text>
+    </xsl:if>
     <xsl:text>]%&#xa;</xsl:text>
 </xsl:template>
 
@@ -7183,6 +7198,25 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:if test="not($ncols = 1)">
         <xsl:text>\end{multicols}&#xa;</xsl:text>
     </xsl:if>
+</xsl:template>
+
+<xsl:template match="ol[@pi:inline = 'yes']">
+    <!-- need to switch on 0-1 for ol Arabic -->
+    <!-- no harm if called on "ul"           -->
+    <xsl:variable name="format-code" select="./@format-code" />
+    <xsl:text>\begin{enumerate*}</xsl:text>
+    <!-- override LaTeX defaults as indicated -->
+    <xsl:if test="@marker or ($format-code = '0') or ancestor::exercises or ancestor::worksheet or ancestor::reading-questions or ancestor::references">
+        <xsl:text>[itemjoin={\qquad}, label={</xsl:text>
+        <xsl:apply-templates select="." mode="latex-list-label" />
+        <xsl:if test="$format-code = '0'">
+            <xsl:text>, start=0</xsl:text>
+        </xsl:if>
+        <xsl:text>}]</xsl:text>
+    </xsl:if>
+    <xsl:text>&#xa;</xsl:text>
+     <xsl:apply-templates />
+    <xsl:text>\end{enumerate*}&#xa;</xsl:text>
 </xsl:template>
 
 <!-- PTX unordered list scheme is distinct -->
@@ -9608,7 +9642,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
                 </xsl:call-template>
             </xsl:if>
             <xsl:choose>
-                <xsl:when test="p">
+                <xsl:when test="p and ancestor::tabular/col[@width]">
                     <!-- paragraph-valign-specification differs from valign-specification -->
                     <xsl:call-template name="paragraph-valign-specification">
                         <xsl:with-param name="align" select="$row-valign" />
