@@ -2463,12 +2463,12 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
 <!-- This may only be needed as support for older servers' generated PreTeXt. -->
 <xsl:template match="statement//var[@form = 'checkboxes']/li[(p[. = '?']) or (normalize-space(.) = '?')]" mode="webwork-rep-to-static"/>
 
-<!-- "var/@form" come back from the server as a result of authored -->
+<!-- @form comes back from the server as a result of authored      -->
 <!-- "answer forms" and should be rendered as lists in static      -->
 <!-- representations.                                              -->
 <!-- NB: this does not preclude the match below (scrubbing default -->
 <!-- items) from functioning.                                      -->
-<xsl:template match="statement//var[@form]" mode="webwork-rep-to-static">
+<xsl:template match="statement//ul[@form]" mode="webwork-rep-to-static">
     <ul>
         <!-- duplicate attributes, but for @form -->
         <xsl:apply-templates select="@*[not(name() = 'form')]" mode="repair"/>
@@ -2492,6 +2492,30 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
         </xsl:attribute>
         <xsl:apply-templates select="node()" mode="webwork-rep-to-static"/>
     </ul>
+</xsl:template>
+
+<xsl:template match="statement//ol[@form]" mode="webwork-rep-to-static">
+    <ol>
+        <!-- duplicate attributes, but for @form -->
+        <xsl:apply-templates select="@*[not(name() = 'form')]" mode="repair"/>
+        <!-- internal attribute to indicate WW origins -->
+        <xsl:attribute name="pi:ww-form">
+            <xsl:value-of select="@form"/>
+        </xsl:attribute>
+        <xsl:apply-templates select="node()" mode="webwork-rep-to-static"/>
+    </ol>
+</xsl:template>
+
+<xsl:template match="statement//dl[@form]" mode="webwork-rep-to-static">
+    <dl>
+        <!-- duplicate attributes, but for @form -->
+        <xsl:apply-templates select="@*[not(name() = 'form')]" mode="repair"/>
+        <!-- internal attribute to indicate WW origins -->
+        <xsl:attribute name="pi:ww-form">
+            <xsl:value-of select="@form"/>
+        </xsl:attribute>
+        <xsl:apply-templates select="node()" mode="webwork-rep-to-static"/>
+    </dl>
 </xsl:template>
 
 <!-- Default xeroxing template -->
