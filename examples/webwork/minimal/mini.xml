@@ -35,6 +35,7 @@
     </frontmatter>
     <section>
       <title><webwork /> Minimal Section</title>
+      <!-- An exercise "generated" from PTX source -->
       <exercise>
         <webwork>
           <pg-code>
@@ -62,17 +63,15 @@
           </solution>
         </webwork>
       </exercise>
+      <!-- An exercise with source from a "webwork2" server           -->
+      <!-- The path is relative to the host course's templates folder -->
       <exercise>
         <webwork source="Library/PCC/BasicAlgebra/Geometry/CylinderVolume10.pg"/>
       </exercise>
+      <!-- An exercise with source from a local "external" asset file -->
+      <!-- The path is relative to the external assets folder         -->
       <exercise>
         <webwork local="pg/newProblem.pg"/>
-      </exercise>
-      <exercise>
-        <webwork local="pg/tikz_macro.pg" seed="2143" />
-      </exercise>
-      <exercise>
-        <webwork local="pg/staticImage.pg" seed="5123" />
       </exercise>
     </section>
   </article>
