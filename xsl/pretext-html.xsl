@@ -226,7 +226,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
             <xsl:value-of select="$document-root//webwork-reps[1]/server-url[1]/@domain" />
         </xsl:when>
         <xsl:when test="$webwork-reps-version = 2">
-            <xsl:value-of select="$document-root//webwork-reps[1]/rendering-data/@domain" />
+            <xsl:value-of select="$webwork-server" />
         </xsl:when>
     </xsl:choose>
 </xsl:variable>
@@ -10058,10 +10058,10 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
             <xsl:value-of select="rendering-data/@origin"/>
         </xsl:attribute>
         <xsl:attribute name="data-renderer">
-            <xsl:value-of select="rendering-data/@renderer"/>
+            <xsl:value-of select="$webwork-renderapi"/>
         </xsl:attribute>
         <xsl:attribute name="data-processing">
-            <xsl:value-of select="rendering-data/@processing"/>
+            <xsl:value-of select="$webwork-interactive-processing"/>
         </xsl:attribute>
         <xsl:choose>
             <xsl:when test="rendering-data/@problemSource">
