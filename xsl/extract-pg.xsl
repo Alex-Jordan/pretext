@@ -144,9 +144,6 @@
             <xsl:attribute name="pg-location">
                 <xsl:value-of select="$webwork-pg-location"/>
             </xsl:attribute>
-            <xsl:attribute name="interactive">
-                <xsl:value-of select="$webwork-interactive-processing"/>
-            </xsl:attribute>
         </processing>
         <xsl:apply-imports/>
     </ww-extraction>
