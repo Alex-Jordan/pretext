@@ -2736,8 +2736,8 @@
             </xsl:with-param>
         </xsl:call-template>
     </xsl:if>
-    <xsl:text>&#xa;</xsl:text>
     <xsl:if test="$b-human-readable">
+        <xsl:text>&#xa;</xsl:text>
         <xsl:call-template name="potential-list-indent" />
     </xsl:if>
     <xsl:text>);@]*</xsl:text>
