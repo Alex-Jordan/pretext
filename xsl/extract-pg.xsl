@@ -110,6 +110,9 @@
 <!-- Initialize empty dictionaries, then define key-value pairs             -->
 <xsl:template match="*" mode="extraction-wrapper">
     <ww-extraction>
+        <xsl:attribute name="numbered-title-filesafe">
+            <xsl:apply-templates select="$document-root" mode="numbered-title-filesafe"/>
+        </xsl:attribute>
         <localization>
             <xsl:value-of select="$document-language"/>
         </localization>

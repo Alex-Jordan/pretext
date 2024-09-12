@@ -89,9 +89,11 @@
 <!-- Overall document title, for root directory name -->
 <xsl:template name="root-directory">
     <xsl:value-of select="$generated-directory"/>
-    <xsl:text>webwork/pg/</xsl:text>
+    <xsl:text>webwork/pg</xsl:text>
+</xsl:template>
+
+<xsl:template name="project-folder">
     <xsl:apply-templates select="$document-root" mode="numbered-title-filesafe" />
-    <xsl:text>/</xsl:text>
 </xsl:template>
 
 <!-- Directory path, recursively climb structural nodes,  -->
@@ -129,9 +131,7 @@
 </xsl:template>
 
 <!-- Append a filename to the directory path              -->
-<xsl:template match="webwork[statement|task]" mode="filename">
-    <xsl:value-of select="$generated-directory"/>
-    <xsl:text>webwork/pg/</xsl:text>
+<xsl:template match="webwork[statement|task]" mode="relative-filename">
     <xsl:apply-templates select="." mode="directory-path" />
     <xsl:if test="parent::project">
         <xsl:text>Project-</xsl:text>
@@ -139,23 +139,38 @@
     <xsl:apply-templates select="parent::*" mode="numbered-title-filesafe" />
     <xsl:text>.pg</xsl:text>
 </xsl:template>
+<xsl:template match="webwork[statement|task]" mode="filename">
+    <xsl:value-of select="$generated-directory"/>
+    <xsl:text>webwork/pg/</xsl:text>
+    <xsl:apply-templates select="." mode="relative-filename"/>
+</xsl:template>
+
+<xsl:template match="webwork[@source|@local]" mode="filename">
+    <xsl:apply-templates select="." mode="relative-filename"/>
+</xsl:template>
 
 <!-- For problems from the OPL, just report the @source -->
-<xsl:template match="webwork[@source]" mode="filename">
+<xsl:template match="webwork[@source]" mode="relative-filename">
     <xsl:value-of select="@source"/>
 </xsl:template>
 
-<!-- For local, just report the @local but inside external directory -->
-<xsl:template match="webwork[@local]" mode="filename">
-    <xsl:value-of select="concat($external-directory,@local)"/>
+<!-- For local, just report @local but inside external directory, and all   -->
+<!-- inside the project folder, with the expectation that a host WW course  -->
+<!-- will copy the external folder to the project folder in templates/      -->
+<xsl:template match="webwork[@local]" mode="relative-filename">
+    <xsl:call-template name="project-folder"/>
+    <xsl:value-of select="concat('/',$external-directory,@local)"/>
 </xsl:template>
 
 <!-- For copied problems move to the problem that was copied -->
-<xsl:template match="webwork[@copy]" mode="filename">
-    <xsl:variable name="copied-from" select="@copy"/>
-    <xsl:apply-templates select="$document-root//webwork[@xml:id=$copy]" mode="filename"/>
+<xsl:template match="webwork[@copied-from]" mode="relative-filename">
+    <xsl:variable name="copied-from" select="@copied-from"/>
+    <xsl:apply-templates select="$document-root//webwork[@xml:id=$copied-from]" mode="relative-filename"/>
 </xsl:template>
-
+<xsl:template match="webwork[@copied-from]" mode="filename">
+    <xsl:variable name="copied-from" select="@copied-from"/>
+    <xsl:apply-templates select="$document-root//webwork[@xml:id=$copied-from]" mode="filename"/>
+</xsl:template>
 
 <!-- ################## -->
 <!-- Problem Extraction -->
@@ -179,8 +194,9 @@
     </exsl:document>
 </xsl:template>
 
-<!-- Only PTX-authored problems produce pg files -->
-<xsl:template match="webwork[@source|@local|@copy]"/>
+<!-- We don't write a new file for a copied webwork exercise -->
+<xsl:template match="webwork[@copied-from]" mode="write-file"/>
+
 
 <!-- ################## -->
 <!-- Chunking Def Files-->
@@ -227,7 +243,9 @@
         <!-- filenames -->
         <xsl:variable name="def-filename">
             <xsl:call-template name="root-directory" />
-            <xsl:text>def/</xsl:text>
+            <xsl:text>/</xsl:text>
+            <xsl:call-template name="project-folder" />
+            <xsl:text>/def/</xsl:text>
             <!-- mandatory filename initial string -->
             <xsl:text>set</xsl:text>
             <xsl:apply-templates select="." mode="numbered-title-filesafe" />
@@ -236,14 +254,19 @@
             </xsl:if>
             <xsl:text>.def</xsl:text>
         </xsl:variable>
-        <xsl:variable name="header-filename">
-            <xsl:call-template name="root-directory" />
-            <xsl:text>header/</xsl:text>
+        <xsl:variable name="relative-header-filename">
+            <xsl:call-template name="project-folder" />
+            <xsl:text>/header/</xsl:text>
             <xsl:apply-templates select="." mode="numbered-title-filesafe" />
             <xsl:if test="$exercises">
                 <xsl:text>_Exercises</xsl:text>
             </xsl:if>
             <xsl:text>.pg</xsl:text>
+        </xsl:variable>
+        <xsl:variable name="header-filename">
+            <xsl:call-template name="root-directory" />
+            <xsl:text>/</xsl:text>
+            <xsl:value-of select="$relative-header-filename"/>
         </xsl:variable>
         <!-- set-definition file -->
         <exsl:document href="{$def-filename}" method="text">
@@ -272,10 +295,10 @@
             <xsl:value-of select="substring($due, 1, 4)" />
             <xsl:text> at 10:00pm&#xa;</xsl:text>
             <xsl:text>paperHeaderFile   = </xsl:text>
-            <xsl:value-of select="$header-filename" />
+            <xsl:value-of select="$relative-header-filename" />
             <xsl:text>&#xa;</xsl:text>
             <xsl:text>screenHeaderFile  = </xsl:text>
-            <xsl:value-of select="$header-filename" />
+            <xsl:value-of select="$relative-header-filename" />
             <xsl:text>&#xa;</xsl:text>
             <xsl:text>description       = </xsl:text>
             <xsl:apply-templates select="." mode="title-simple" />
@@ -303,7 +326,7 @@
 <xsl:template match="webwork" mode="def-info-v2">
     <xsl:text>problem_start&#xa;</xsl:text>
     <xsl:text>source_file = </xsl:text> <!-- PG file -->
-    <xsl:apply-templates select="." mode="filename" />
+    <xsl:apply-templates select="." mode="relative-filename" />
     <xsl:text>&#xa;</xsl:text>
     <!--Much of the following commented out until we decide we should include them.   -->
     <!--WeBWorK provides good default values, customizable by sysadmin or instructor. -->

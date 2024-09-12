@@ -1100,7 +1100,6 @@ def webwork_to_xml(
     import base64  # b64encode()
     import copy
     import tarfile
-    import pathlib
 
     # support publisher file, subtree argument
     if pub_file:
@@ -1118,14 +1117,14 @@ def webwork_to_xml(
     if generated_dir:
         ww_reps_dir = os.path.join(generated_dir, "webwork")
         ww_images_dir = os.path.join(ww_reps_dir, "images")
-        ww_generated_macros_dir = os.path.join(ww_reps_dir, "macros")
 
-        pathlib.Path(generated_dir).mkdir(exist_ok=True)
-        pathlib.Path(ww_reps_dir).mkdir(exist_ok=True)
-        pathlib.Path(ww_images_dir).mkdir(exist_ok=True)
-        pathlib.Path(ww_generated_macros_dir).mkdir(exist_ok=True)
+        if not (os.path.isdir(generated_dir)):
+            os.mkdir(generated_dir)
+        if not (os.path.isdir(ww_reps_dir)):
+            os.mkdir(ww_reps_dir)
+        if not (os.path.isdir(ww_images_dir)):
+            os.mkdir(ww_images_dir)
 
-        pg_macros(xml_source, pub_file, stringparams, ww_generated_macros_dir)
         webwork_sets(xml_source, pub_file, stringparams, dest_dir, False)
 
     else:
@@ -1161,6 +1160,7 @@ def webwork_to_xml(
     localization = extracted_pg_xml.find("localization").text
     webwork2_server = extracted_pg_xml.find("server-params-pub").find("webwork2-domain").text
     renderer_server = extracted_pg_xml.find("server-params-pub").find("renderapi").text
+    numbered_title_filesafe = extracted_pg_xml.get("numbered-title-filesafe")
     # The only way the next block does not execute is if there were no publication file at all.
     no_publication_file = False
     if webwork2_server is not None:
@@ -1173,7 +1173,6 @@ def webwork_to_xml(
             "renderapi": renderer_server
         }
         static_processing = extracted_pg_xml.find("processing").attrib["static"]
-        interactive_processing = extracted_pg_xml.find("processing").attrib["interactive"]
         pg_location = extracted_pg_xml.find("processing").attrib["pg-location"]
     else:
         no_publication_file = True
@@ -1393,9 +1392,9 @@ def webwork_to_xml(
 
         extra_macro_dirs = []
 
-        if os.path.exists(os.path.join(generated_dir, 'webwork', 'macros')):
+        if os.path.exists(os.path.join(generated_dir, 'webwork', 'pg', numbered_title_filesafe, 'macros')):
             extra_macro_dirs.append('--extraMacroDir')
-            extra_macro_dirs.append(os.path.join(generated_dir, 'webwork', 'macros'))
+            extra_macro_dirs.append(os.path.join(generated_dir, 'webwork', 'pg', numbered_title_filesafe, 'macros'))
 
         if os.path.exists(os.path.join(external_dir, 'macros')):
             extra_macro_dirs.append('--extraMacroDir')
@@ -1504,7 +1503,8 @@ def webwork_to_xml(
 
         elif static_processing == 'renderer' and origin[problem] != 'webwork2':
             if origin[problem] == "external":
-                server_params_source = {"rawProblemSource":pathlib.Path(path[problem]).read_text()}
+                with open(path[problem]) as f: rawProblemSource = f.read()
+                server_params_source = {"rawProblemSource":rawProblemSource}
             else:
                 server_params_source = {"rawProblemSource":pghuman[problem]}
 
@@ -1538,7 +1538,8 @@ def webwork_to_xml(
                     if origin[problem] == "webwork2":
                         server_params_source = {"sourceFilePath":path[problem]}
                     elif origin[problem] == "external":
-                        server_params_source = {"rawProblemSource":pathlib.Path(path[problem]).read_text()}
+                        with open(path[problem]) as f: rawProblemSource = f.read()
+                        server_params_source = {"rawProblemSource":rawProblemSource}
                     else:
                         server_params_source = {"rawProblemSource":pgdense[problem]}
                 else:
@@ -2011,16 +2012,11 @@ def webwork_to_xml(
                     else:
                         source_value = path[problem]
 
-            processing_type = interactive_processing
-            if origin[problem] == 'webwork2':
-                processing_type = 'webwork2'
-
             rendering_data = ET.SubElement(webwork_reps, "rendering-data")
             rendering_data.set(source_key, source_value)
             rendering_data.set("origin", origin[problem])
             rendering_data.set("domain", webwork2_domain)
             rendering_data.set("renderer", renderer_server)
-            rendering_data.set("processing", processing_type)
             rendering_data.set("course-id", courseID)
             rendering_data.set("user-id", user)
             rendering_data.set("course-password", passwd)
@@ -2138,9 +2134,6 @@ def webwork_sets(xml_source, pub_file, stringparams, dest_dir, tgz):
     # But it is the only thing in the tmp_dir
     folder_name = os.listdir(tmp_dir)[0]
     folder = os.path.join(tmp_dir, folder_name)
-    macros_folder = os.path.join(folder, 'webwork', 'macros')
-    os.mkdir(macros_folder)
-    pg_macros(xml_source, pub_file, stringparams, macros_folder)
     if tgz:
         archive_file = os.path.join(tmp_dir, folder_name + ".tgz")
         targz(archive_file, folder)
@@ -2150,6 +2143,7 @@ def webwork_sets(xml_source, pub_file, stringparams, dest_dir, tgz):
         # see comments at  copy_build_directory()
         # before replacing with  shutil.copytree()
         copy_build_directory(folder, os.path.join(dest_dir,folder_name))
+    pg_macros(xml_source, pub_file, stringparams, dest_dir)
 
 
 ################################
@@ -2168,7 +2162,11 @@ def pg_macros(xml_source, pub_file, stringparams, dest_dir):
         stringparams["publisher"] = pub_file
     ptx_xsl_dir = get_ptx_xsl_path()
     extraction_xslt = os.path.join(ptx_xsl_dir, "support", "pretext-pg-macros.xsl")
-    xsltproc(extraction_xslt, xml_source, None, output_dir=dest_dir, stringparams=stringparams)
+    tmp_dir = get_temporary_directory()
+    xsltproc(extraction_xslt, xml_source, None, output_dir=tmp_dir, stringparams=stringparams)
+    folder_name = os.listdir(tmp_dir)[0]
+    folder = os.path.join(tmp_dir, folder_name)
+    copy_build_directory(folder, os.path.join(dest_dir,folder_name))
 
 
 ##############################
@@ -4548,7 +4546,6 @@ def verify_input_directory(inputdir):
 
 def get_managed_directories(xml_source, pub_file):
     """Returns pair: (generated, external) absolute paths, derived from publisher file"""
-    import pathlib
 
     # N.B. manage attributes carefully to distinguish
     # absent (None) versus empty string value ('')
@@ -4586,7 +4583,8 @@ def get_managed_directories(xml_source, pub_file):
                 [
                     'the directory "{}" implied by the value "{}" in the',
                     '"source/directories/@{}" entry of the publisher file does not',
-                    "exist and could not be created. Check file permissions."
+                    "exist. Check the spelling, create the necessary directory, or entirely",
+                    'remove the whole "source/directories" element of the publisher file.'
                 ]
             )
             # attribute absent => None
@@ -4597,7 +4595,6 @@ def get_managed_directories(xml_source, pub_file):
                 else:
                     abs_path = os.path.join(source_dir, raw_path)
                 try:
-                    pathlib.Path(abs_path).mkdir(parents=True, exist_ok=True)
                     generated = verify_input_directory(abs_path)
                 except:
                     raise ValueError(missing_dir_error.format(abs_path, raw_path, gen_attr))
@@ -4609,7 +4606,6 @@ def get_managed_directories(xml_source, pub_file):
                 else:
                     abs_path = os.path.join(source_dir, raw_path)
                 try:
-                    pathlib.Path(abs_path).mkdir(parents=True, exist_ok=True)
                     external = verify_input_directory(abs_path)
                 except:
                     raise ValueError(missing_dir_error.format(abs_path, raw_path, ext_attr))
