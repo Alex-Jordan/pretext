@@ -1491,7 +1491,7 @@ def webwork_to_xml(
             socket_params = { "problemSeed": seed[problem], "problemUUID": problem }
 
             if origin[problem] == 'generated':
-                socket_params["source"] = pghuman[problem]
+                socket_params["source"] = pgdense[problem]
             else:
                 socket_params["sourceFilePath"] = re.sub(r'^external\/', '', path[problem])
 
@@ -1506,7 +1506,7 @@ def webwork_to_xml(
                 with open(path[problem]) as f: rawProblemSource = f.read()
                 server_params_source = {"rawProblemSource":rawProblemSource}
             else:
-                server_params_source = {"rawProblemSource":pghuman[problem]}
+                server_params_source = {"rawProblemSource":pgdense[problem]}
 
             server_params = {
                 "showSolutions": "1",
