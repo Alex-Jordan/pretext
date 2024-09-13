@@ -216,20 +216,8 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 <!-- inserted into the source by the pre-processor ("assembly") when     -->
 <!-- making dynamic exercises.                                           -->
 
-<xsl:variable name="webwork-reps-version" select="$document-root//webwork-reps[1]/@version"/>
 <xsl:variable name="webwork-major-version" select="$document-root//webwork-reps[1]/@webwork2_major_version"/>
 <xsl:variable name="webwork-minor-version" select="$document-root//webwork-reps[1]/@webwork2_minor_version"/>
-
-<xsl:variable name="webwork-domain">
-    <xsl:choose>
-        <xsl:when test="$webwork-reps-version = 1">
-            <xsl:value-of select="$document-root//webwork-reps[1]/server-url[1]/@domain" />
-        </xsl:when>
-        <xsl:when test="$webwork-reps-version = 2">
-            <xsl:value-of select="$webwork-server" />
-        </xsl:when>
-    </xsl:choose>
-</xsl:variable>
 
 <!-- #### EXPERIMENTAL #### -->
 <!-- We allow for the HTML conversion to chunk output, starting  -->
@@ -9886,15 +9874,8 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 <!-- WeBWorK Javascript header -->
 <xsl:template name="webwork-js">
     <xsl:if test="$b-has-webwork-reps">
-        <xsl:choose>
-            <xsl:when test="$webwork-reps-version = 1">
-                <script src="{$webwork-domain}/webwork2_files/js/vendor/iframe-resizer/js/iframeResizer.min.js"></script>
-            </xsl:when>
-            <xsl:when test="$webwork-reps-version = 2">
-                <script src="{$html.js.dir}/pretext-webwork/2.{$webwork-minor-version}/pretext-webwork.js"></script>
-                <script src="{$webwork-domain}/webwork2_files/node_modules/iframe-resizer/js/iframeResizer.min.js"></script>
-            </xsl:when>
-        </xsl:choose>
+        <script src="{$html.js.dir}/pretext-webwork/2.{$webwork-minor-version}/pretext-webwork.js"></script>
+        <script src="{$webwork-server}/webwork2_files/node_modules/iframe-resizer/js/iframeResizer.min.js"></script>
     </xsl:if>
 </xsl:template>
 
@@ -9951,23 +9932,14 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
                 <xsl:with-param name="b-has-solution"  select="$b-has-solution"/>
             </xsl:apply-templates>
         </xsl:when>
-        <xsl:when test="$webwork-reps-version = 1">
-            <xsl:if test="$b-webwork-inline-randomize">
-                <xsl:apply-templates select="." mode="webwork-randomize-buttons"/>
-            </xsl:if>
-            <xsl:apply-templates select="." mode="webwork-iframe">
-                <xsl:with-param name="b-has-hint"     select="$b-has-hint"/>
-                <xsl:with-param name="b-has-solution" select="$b-has-solution"/>
-            </xsl:apply-templates>
-        </xsl:when>
-        <xsl:when test="$webwork-reps-version = 2">
+        <xsl:otherwise>
             <xsl:apply-templates select="." mode="webwork-interactive-div">
                 <xsl:with-param name="b-original"     select="$b-original"/>
                 <xsl:with-param name="b-has-hint"     select="$b-has-hint"/>
                 <xsl:with-param name="b-has-answer"   select="$b-has-answer"/>
                 <xsl:with-param name="b-has-solution" select="$b-has-solution"/>
             </xsl:apply-templates>
-        </xsl:when>
+        </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
 
@@ -9999,7 +9971,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     </xsl:variable>
     <div id="{$inner-id}" class="exercise-wrapper">
         <xsl:attribute name="data-domain">
-            <xsl:value-of select="$webwork-domain"/>
+            <xsl:value-of select="$webwork-server"/>
         </xsl:attribute>
         <xsl:attribute name="data-seed" >
             <xsl:value-of select="static/@seed"/>
@@ -10133,7 +10105,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <iframe name="{@ww-id}" width="{$design-width}" src="{$the-url}" data-seed="{static/@seed}"/>
     <script>
         <xsl:text>iFrameResize({log:true,inPageLinks:true,resizeFrom:'child',checkOrigin:["</xsl:text>
-        <xsl:value-of select="$webwork-domain" />
+        <xsl:value-of select="$webwork-server" />
         <xsl:text>"]})</xsl:text>
     </script>
 </xsl:template>

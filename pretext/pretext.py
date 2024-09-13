@@ -1326,14 +1326,6 @@ def webwork_to_xml(
 
     webwork2_path = webwork2_render_rpc if (webwork2_major_version == 2 and webwork2_minor_version >= 19) else webwork2_html2xml
 
-    ww_reps_version = ""
-    if webwork2_major_version == 2 and (webwork2_minor_version == 14 or webwork2_minor_version == 15):
-        # version 1: live problems are embedded in an iframe
-        ww_reps_version = "1"
-    elif webwork2_major_version == 2 and webwork2_minor_version >= 16:
-        # version 1: live problems are injected into a div using javascript
-        ww_reps_version = "2"
-
     # initialize dictionaries for all the problem features
     origin = {}
     copied_from = {}
@@ -1468,24 +1460,13 @@ def webwork_to_xml(
 
         # make base64 for PTX problems for webwork prior to 2.19
         if origin[problem] == "generated":
-            if ww_reps_version == "2" and webwork2_minor_version < 19:
+            if webwork2_minor_version < 19:
                 pgbase64 = base64.b64encode(bytes(pgdense[problem], "utf-8")).decode(
                     "utf-8"
                 )
                 embed_problem_base64 = base64.b64encode(bytes(embed_problem, "utf-8")).decode(
                     "utf-8"
                 )
-            elif ww_reps_version == "1":
-                pgbase64 = {}
-                for hint_sol in [
-                    "hint_yes_solution_yes",
-                    "hint_yes_solution_no",
-                    "hint_no_solution_yes",
-                    "hint_no_solution_no",
-                ]:
-                    pgbase64[hint_sol] = base64.b64encode(
-                        bytes(pgdense[hint_sol][problem], "utf-8")
-                    )
 
         if static_processing == 'local' and origin[problem] != 'webwork2':
             socket_params = { "problemSeed": seed[problem], "problemUUID": problem }
@@ -1533,29 +1514,22 @@ def webwork_to_xml(
             #   URL of a problem stored there already
             #   or a base64 encoding of a problem
             # server_params is tuple rather than dictionary to enforce consistent order in url parameters
-            if ww_reps_version == "2":
-                if webwork2_minor_version >= 19:
-                    if origin[problem] == "webwork2":
-                        server_params_source = {"sourceFilePath":path[problem]}
-                    elif origin[problem] == "external":
-                        with open(path[problem]) as f: rawProblemSource = f.read()
-                        server_params_source = {"rawProblemSource":rawProblemSource}
-                    else:
-                        server_params_source = {"rawProblemSource":pgdense[problem]}
+            if webwork2_minor_version >= 19:
+                if origin[problem] == "webwork2":
+                    server_params_source = {"sourceFilePath":path[problem]}
+                elif origin[problem] == "external":
+                    with open(path[problem]) as f: rawProblemSource = f.read()
+                    server_params_source = {"rawProblemSource":rawProblemSource}
                 else:
-                    server_params_source = (
-                        ("sourceFilePath", path[problem])
-                        if origin[problem] == "webwork2"
-                        else ("problemSource", pgbase64)
-                    )
-            elif ww_reps_version == "1":
+                    server_params_source = {"rawProblemSource":pgdense[problem]}
+            else:
                 server_params_source = (
                     ("sourceFilePath", path[problem])
                     if origin[problem] == "webwork2"
-                    else ("problemSource", pgbase64["hint_yes_solution_yes"])
+                    else ("problemSource", pgbase64)
                 )
 
-            if ww_reps_version == "2" and webwork2_minor_version >= 19:
+            if webwork2_minor_version >= 19:
                 server_params = {
                     "showSolutions": "1",
                     "showHints": "1",
@@ -1593,25 +1567,15 @@ def webwork_to_xml(
                     )
                 )
             elif origin[problem] == "generated":
-                if ww_reps_version == "2":
-                    log.debug(
-                        "server-to-ptx: {}\n{}\n{}\n{}".format(
-                            problem, webwork2_path, pgdense[problem], ww_reps_file
-                        )
+                log.debug(
+                    "server-to-ptx: {}\n{}\n{}\n{}".format(
+                        problem, webwork2_path, pgdense[problem], ww_reps_file
                     )
-                elif ww_reps_version == "1":
-                    log.debug(
-                        "server-to-ptx: {}\n{}\n{}\n{}".format(
-                            problem,
-                            webwork2_path,
-                            pgdense["hint_yes_solution_yes"][problem],
-                            ww_reps_file,
-                        )
-                    )
+                )
 
             # Ready, go out on the wire
             try:
-                if ww_reps_version == "2" and webwork2_minor_version >= 19:
+                if webwork2_minor_version >= 19:
                     response = webwork2_session.post(webwork2_path, data=server_params)
                 else:
                     response = webwork2_session.get(webwork2_path, params=server_params)
@@ -1705,8 +1669,6 @@ def webwork_to_xml(
         # depending on the string's content and the version of WeBWorK, it can come back as:
 
         # \text{string}            only when the string is built solely from -A-Za-z0-9 ,.;:+=?()[]
-        # \verb\x85string\x85      version 2.14 and earlier
-        # \verb\x1Fstring\x1F      certain develop branches between 2.14 and 2.15, and WW HTML output for 2.15+
         # {\verb\rstring\r}        WW PTX (and TeX) output starting with 2.15, hopefully stable
 
         # We would like to replace all instances with \text{string},
@@ -1716,16 +1678,16 @@ def webwork_to_xml(
         # and otherwise leave \verb in place. But we replace the delimiter with the first available
         # "normal" character.
         # \r would be valid XML, but too unpredictable in translations
-        # something like \x85 would be vald XML, but may not be OK in some translations
+        # something like \x85 would be valid XML, but may not be OK in some translations
 
         verbatim_split = re.split(
-            r"(\\verb\x85.*?\x85|\\verb\x1F.*?\x1F|\\verb\r.*?\r)", response
+            r"\\verb\r.*?\r", response
         )
         response_text = ""
         for item in verbatim_split:
-            if re.match(r"^\\verb(\x85|\x1F|\r).*?\1$", item):
+            if re.match(r"^\\verb\r.*?\r$", item):
                 (original_delimiter, verbatim_content) = re.search(
-                    r"\\verb(\x85|\x1F|\r)(.*?)\1", item
+                    r"\\verb\r(.*?)\r", item
                 ).group(1, 2)
                 if set(
                     ["#", "%", "&", "<", ">", "\\", "^", "_", "`", "|", "~"]
@@ -1888,7 +1850,6 @@ def webwork_to_xml(
 
         # Use "webwork-reps" as parent tag for the various representations of a problem
         webwork_reps = ET.SubElement(webwork_representations, "webwork-reps")
-        webwork_reps.set("version", ww_reps_version)
         webwork_reps.set("webwork2_major_version", str(webwork2_major_version))
         webwork_reps.set("webwork2_minor_version", str(webwork2_minor_version))
         webwork_reps.set("{%s}id" % (XML), "extracted-" + problem)
@@ -1994,68 +1955,31 @@ def webwork_to_xml(
 
         static_webwork_level(static, response_root)
 
-        # Add elements for interactivity
-        if ww_reps_version == "2":
-            # Add rendering-data element with attribute data for rendering a problem
-            if (badness or origin[problem] == "generated" or webwork2_minor_version < 19):
-                source_key = "problemSource"
+        # Add rendering-data element with attribute data for rendering a problem
+        if (badness or origin[problem] == "generated" or webwork2_minor_version < 19):
+            source_key = "problemSource"
+        else:
+            source_key = "sourceFilePath"
+        if badness:
+            source_value = badness_base64
+        else:
+            if origin[problem] == "external" or origin[problem] == "webwork2":
+                source_value = path[problem]
             else:
-                source_key = "sourceFilePath"
-            if badness:
-                source_value = badness_base64
-            else:
-                if origin[problem] == "external" or origin[problem] == "webwork2":
-                    source_value = path[problem]
+                if webwork2_minor_version < 19:
+                    source_value = embed_problem_base64
                 else:
-                    if webwork2_minor_version < 19:
-                        source_value = embed_problem_base64
-                    else:
-                        source_value = path[problem]
+                    source_value = path[problem]
 
-            rendering_data = ET.SubElement(webwork_reps, "rendering-data")
-            rendering_data.set(source_key, source_value)
-            rendering_data.set("origin", origin[problem])
-            rendering_data.set("domain", webwork2_domain)
-            rendering_data.set("renderer", renderer_server)
-            rendering_data.set("course-id", courseID)
-            rendering_data.set("user-id", user)
-            rendering_data.set("course-password", passwd)
-            rendering_data.set("language", localization)
-
-        elif ww_reps_version == "1":
-            # Add server-url elements for putting into the @src of an iframe
-            for hint in ["yes", "no"]:
-                for solution in ["yes", "no"]:
-                    hintsol = "hint_" + hint + "_solution_" + solution
-                    source_selector = (
-                        "problemSource="
-                        if (badness or origin[problem] == "generated")
-                        else "sourceFilePath="
-                    )
-                    if badness:
-                        source_value = urllib.parse.quote(badness_base64)
-                    else:
-                        if origin[problem] == "webwork2":
-                            source_value = path[problem]
-                        else:
-                            source_value = urllib.parse.quote_plus(pgbase64[hintsol])
-                    source_query = source_selector + source_value
-
-                    server_url = ET.SubElement(webwork_reps, "server-url")
-                    server_url.set("hint", hint)
-                    server_url.set("solution", solution)
-                    server_url.set("domain", webwork2_domain)
-                    url_shell = "{}?courseID={}&userID={}&password={}&course_password={}&answersSubmitted=0&displayMode=MathJax&outputformat=simple&language={}&problemSeed={}&{}"
-                    server_url.text = url_shell.format(
-                        webwork2_path,
-                        courseID,
-                        userID,
-                        password,
-                        course_password,
-                        localization,
-                        seed[problem],
-                        source_query,
-                    )
+        rendering_data = ET.SubElement(webwork_reps, "rendering-data")
+        rendering_data.set(source_key, source_value)
+        rendering_data.set("origin", origin[problem])
+        rendering_data.set("domain", webwork2_domain)
+        rendering_data.set("renderer", renderer_server)
+        rendering_data.set("course-id", courseID)
+        rendering_data.set("user-id", user)
+        rendering_data.set("course-password", passwd)
+        rendering_data.set("language", localization)
 
         # Add PG for PTX-authored problems
         # Empty tag with @source for server problems
