@@ -1344,6 +1344,8 @@ def webwork_to_xml(
         path[problem.get("id")]   = problem.get("path")
         if problem.get("copied-from") is not None:
             copied_from[problem.get("id")] = problem.get("copied-from")
+        else:
+            copied_from[problem.get("id")] = None
         if problem.get("origin") == "generated":
             pghuman[problem.get("id")] = problem.find("pghuman").text
             # in the past pgdense was minimized pg; now we do not bother and just use pghuman
@@ -1960,6 +1962,7 @@ def webwork_to_xml(
             source_key = "problemSource"
         else:
             source_key = "sourceFilePath"
+
         if badness:
             source_value = badness_base64
         else:
@@ -1969,7 +1972,10 @@ def webwork_to_xml(
                 if webwork2_minor_version < 19:
                     source_value = embed_problem_base64
                 else:
-                    source_value = path[problem]
+                    if copied_from[problem] is not None:
+                        source_value = path[copied_from[problem]]
+                    else:
+                        source_value = path[problem]
 
         rendering_data = ET.SubElement(webwork_reps, "rendering-data")
         rendering_data.set(source_key, source_value)
