@@ -10030,7 +10030,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
             <xsl:value-of select="rendering-data/@origin"/>
         </xsl:attribute>
         <xsl:attribute name="data-renderer">
-            <xsl:value-of select="$webwork-renderapi"/>
+            <xsl:value-of select="$webwork-renderer"/>
         </xsl:attribute>
         <xsl:attribute name="data-processing">
             <xsl:value-of select="$webwork-interactive-processing"/>

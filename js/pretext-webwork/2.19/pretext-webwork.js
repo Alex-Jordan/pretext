@@ -79,10 +79,9 @@ async function handleWW(ww_id, action) {
     if (ww_processing == 'webwork2') {
         url = new URL(ww_domain + '/webwork2/render_rpc');
     } else if (ww_processing == 'renderer') {
-        url = new URL(ww_renderer + '/renderapi');
+        url = new URL(ww_renderer + '/renderer/render-api');
     }
     let formData = new FormData();
-    console.log(ww_renderer)
 
     if (action == 'check' || action =='reveal') {
         const iframe = ww_container.querySelector('.problem-iframe');

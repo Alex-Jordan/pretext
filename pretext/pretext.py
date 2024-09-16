@@ -1159,7 +1159,7 @@ def webwork_to_xml(
     extracted_pg_xml = ET.parse(extracted_pg_filename).getroot()
     localization = extracted_pg_xml.find("localization").text
     webwork2_server = extracted_pg_xml.find("server-params-pub").find("webwork2-domain").text
-    renderer_server = extracted_pg_xml.find("server-params-pub").find("renderapi").text
+    renderer_server = extracted_pg_xml.find("server-params-pub").find("renderer").text
     numbered_title_filesafe = extracted_pg_xml.get("numbered-title-filesafe")
     # The only way the next block does not execute is if there were no publication file at all.
     no_publication_file = False
@@ -1170,7 +1170,7 @@ def webwork_to_xml(
             "user": extracted_pg_xml.find("server-params-pub").find("user-id").text,
             "passwd": extracted_pg_xml.find("server-params-pub").find("password").text,
             "disableCookies": '1',
-            "renderapi": renderer_server
+            "renderer": renderer_server
         }
         static_processing = extracted_pg_xml.find("processing").attrib["static"]
         pg_location = extracted_pg_xml.find("processing").attrib["pg-location"]
@@ -1182,7 +1182,7 @@ def webwork_to_xml(
             "user": "anonymous",
             "passwd": "anonymous",
             "disableCookies": '1',
-            "renderapi": "https://webwork-dev.aimath.org/renderer"
+            "renderer": "https://webwork-dev.aimath.org"
         }
         static_processing = 'webwork2'
         interactive_processing = 'webwork2'
@@ -1224,7 +1224,7 @@ def webwork_to_xml(
         user            = server_params_pub["user"]
         passwd          = server_params_pub["passwd"]
         if static_processing == "renderer":
-            renderapi       = sanitize_url(server_params_pub["renderapi"])
+            renderer       = sanitize_url(server_params_pub["renderer"])
 
     webwork2_domain_webwork2 = webwork2_domain + "/webwork2/"
     webwork2_render_rpc = webwork2_domain_webwork2 + "render_rpc"
@@ -1507,7 +1507,7 @@ def webwork_to_xml(
             msg = "sending {} to renderer to save in {}: origin is '{}'"
             log.info(msg.format(problem, ww_reps_file, origin[problem]))
 
-            response = renderer_session.post(renderapi + '/render-ptx', data=server_params)
+            response = renderer_session.post(renderer + '/renderer/render-ptx', data=server_params)
             response = response.text
 
         else:
@@ -1757,7 +1757,7 @@ def webwork_to_xml(
                 image_url = ww_image_url
             else:
                 if static_processing == 'renderer' and origin[problem] != 'webwork2':
-                    image_url = urllib.parse.urljoin(renderapi, ww_image_full_path)
+                    image_url = urllib.parse.urljoin(renderer, ww_image_full_path)
                 else:
                     image_url = urllib.parse.urljoin(webwork2_domain, ww_image_full_path)
             # modify PTX problem source to include local versions
