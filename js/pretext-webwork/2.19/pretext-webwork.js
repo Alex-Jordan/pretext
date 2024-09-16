@@ -156,6 +156,19 @@ async function handleWW(ww_id, action) {
             }
         }
 
+        // Hide textarea input and hide associated buttons
+        var textareas = body_div.getElementsByTagName("textarea");
+        for(var i = 0, max = textareas.length; i < max; i++)
+        {
+            textareas[i].style.display = "none";
+            textareas[i].className = '';
+        }
+        var textareabuttons = body_div.querySelectorAll(".latexentry-preview");
+        for(var i = 0, max = textareabuttons.length; i < max; i++)
+        {
+            textareabuttons[i].remove();
+        }
+
         adjustSrcHrefs(body_div, ww_domain);
 
         translateHintSol(ww_id, body_div, ww_domain,
