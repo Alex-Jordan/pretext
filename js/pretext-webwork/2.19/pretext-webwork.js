@@ -359,6 +359,7 @@ async function handleWW(ww_id, action) {
                         }
                     },
                     options: {
+                        processHtmlClass: "process-math",
                         renderActions: {
                             findScript: [
                                 10,
@@ -422,7 +423,11 @@ async function handleWW(ww_id, action) {
                 .graphtool-answer-container .graphtool-number-line { height: 57px; }
                 .quill-toolbar { scrollbar-width: thin; overflow-x: hidden; }
             </style>` +
-            '</head><body><main class="pretext-content problem-content">' + form.outerHTML + '</main></body>' +
+            '</head><body>' +
+            '<div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\\(' +
+            document.getElementById('latex-macros').dataset.macros +
+            '\\)</span></div>' +
+            '<main class="pretext-content problem-content" data-iframe-height="1">' + form.outerHTML + '</main></body>' +
             '</html>';
 
         let iframe;

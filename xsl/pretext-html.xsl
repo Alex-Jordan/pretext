@@ -12648,17 +12648,18 @@ TODO:
 <!-- sneaking in packages, which load first, in       -->
 <!-- case authors want to build on these macros       -->
 <xsl:template name="latex-macros">
-    <div id="latex-macros" class="hidden-content process-math" style="display:none">
+    <xsl:variable name="packages-and-macros">
+        <xsl:value-of select="$latex-packages-mathjax"/>
+        <xsl:value-of select="$latex-macros"/>
+        <xsl:call-template name="fillin-math"/>
+        <!-- legacy built-in support for "slanted|beveled|nice" fractions -->
+        <xsl:if test="$b-has-sfrac">
+            <xsl:text>\newcommand{\sfrac}[2]{{#1}/{#2}}&#xa;</xsl:text>
+        </xsl:if>
+    </xsl:variable>
+    <div id="latex-macros" class="hidden-content process-math" style="display:none" data-macros="{$packages-and-macros}">
         <xsl:call-template name="inline-math-wrapper">
-            <xsl:with-param name="math">
-                <xsl:value-of select="$latex-packages-mathjax"/>
-                <xsl:value-of select="$latex-macros"/>
-                <xsl:call-template name="fillin-math"/>
-                <!-- legacy built-in support for "slanted|beveled|nice" fractions -->
-                <xsl:if test="$b-has-sfrac">
-                    <xsl:text>\newcommand{\sfrac}[2]{{#1}/{#2}}&#xa;</xsl:text>
-                </xsl:if>
-            </xsl:with-param>
+            <xsl:with-param name="math" select="$packages-and-macros"/>
         </xsl:call-template>
     </div>
 </xsl:template>
