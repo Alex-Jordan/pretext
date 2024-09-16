@@ -84,11 +84,14 @@ async function handleWW(ww_id, action) {
     let formData = new FormData();
     console.log(ww_renderer)
 
-    if (action == 'check') {
+    if (action == 'check' || action =='reveal') {
         const iframe = ww_container.querySelector('.problem-iframe');
         formData = new FormData(iframe.contentDocument.getElementById(ww_id + "-form"));
         formData.set("answersSubmitted", '1');
         formData.set('WWsubmit', "1");
+        if (action == 'reveal' && ww_container.dataset.hasAnswer == 'true') {
+            formData.set('WWcorrectAnsOnly', "1");
+        }
         if (ww_origin == 'generated') {
             const rawProblemSource = await fetch(ww_problemSource).then((r) => r.text());
             formData.set("rawProblemSource", rawProblemSource);
@@ -243,24 +246,6 @@ async function handleWW(ww_id, action) {
             form.appendChild(input);
         }
 
-        // Prepare answers object
-        const answers = {};
-        // id the answers even if we won't populate them
-        Object.keys(data.rh_result.answers).forEach(function(id) {
-            answers[id] = {};
-        }, data.rh_result.answers);
-        if (ww_container.dataset.hasAnswer == 'true') {
-            // Update answer data
-            Object.keys(data.rh_result.answers).forEach(function(id) {
-                answers[id] = {
-                    correct_ans: this[id].correct_ans,
-                    correct_ans_latex_string: this[id].correct_ans_latex_string,
-                    correct_choice: this[id].correct_choice,
-                    correct_choices: this[id].correct_choices,
-                };
-            }, data.rh_result.answers);
-        }
-
         let buttonContainer = ww_container.querySelector('.problem-buttons.webwork');
         // Create the submission buttons if they have not yet been created.
         if (!buttonContainer) {
@@ -302,7 +287,7 @@ async function handleWW(ww_id, action) {
                 correct.type = "button";
                 correct.style.marginRight = "0.25rem";
                 correct.textContent = localize_reveal;
-                correct.addEventListener('click', () => WWshowCorrect(ww_id, answers));
+                correct.addEventListener('click', () => handleWW(ww_id, 'reveal'));
                 buttonContainer.appendChild(correct);
             }
 
@@ -322,14 +307,6 @@ async function handleWW(ww_id, action) {
             reset.textContent = localize_reset;
             reset.addEventListener('click', () => resetWW(ww_id));
             buttonContainer.appendChild(reset)
-        } else {
-            // Update the click handler for the show correct button.
-            if (ww_container.dataset.hasAnswer == 'true') {
-                const correct = buttonContainer.querySelector('.show-correct');
-                const correctNew = correct.cloneNode(true);
-                correctNew.addEventListener('click', () => WWshowCorrect(ww_id, answers));
-                correct.replaceWith(correctNew);
-            }
         }
 
         let iframeContents = '<!DOCTYPE html><head>' +
