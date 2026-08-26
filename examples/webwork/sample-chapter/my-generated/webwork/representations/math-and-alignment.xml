@@ -1,29 +1,29 @@
 <?xml version='1.0' encoding='utf-8'?>
-<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="20" xml:id="extracted-math-and-alignment" assembly-id="math-and-alignment">
+<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="21" xml:id="extracted-math-and-alignment" assembly-id="math-and-alignment">
   <static seed="52">
     <statement><p>If <m>a=5</m> and <m>b=12\text{,}</m> then</p>
-<p><me>a^2+b^2=13^2\text{.}</me></p>
+<p><md>a^2+b^2=13^2\text{.}</md></p>
 <p>Here, we solve an equation.</p>
-<p><me>\begin{aligned}
+<p><md>\begin{aligned}
 2x+1 \amp= 3\\
 2x   \amp= 2\\
 x    \amp= 1
-\end{aligned}</me></p>
+\end{aligned}</md></p>
 <p>Here we have a three-way inequality to solve.</p>
-<p><me>\begin{gathered}
+<p><md>\begin{gathered}
 1 \lt 2x+1 \lt 3\\
 0 \lt 2x   \lt 2\\
 0 \lt x    \lt 1
-\end{gathered}</me></p>
+\end{gathered}</md></p>
 <p>And here, we see a system of equations.</p>
-<p><me>\begin{alignedat}{3}
+<p><md>\begin{alignedat}{3}
 2x + 2y \amp {}+{} \amp z \amp {}={} \amp 10\\
 y \amp {}-{} \amp  4z \amp {}={} \amp 9\\
 \amp\amp   3z \amp {}={} \amp -6
-\end{alignedat}</me></p>
+\end{alignedat}</md></p>
 </statement>
   </static>
-  <rendering-data problemSource="Integrating_WeBWorK_into_Textbooks/1-Instructive_Examples/1_5-Math_Content/1_5_1-Math_Elements_and_Alignment.pg" origin="generated" domain="https://webwork-ptx.aimath.org" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
+  <rendering-data problemSource="Integrating_WeBWorK_into_Textbooks/1-Instructive_Examples/1_5-Math_Content/1_5_1-Math_Elements_and_Alignment.pg" origin="generated" domain="https://webwork.pcc.edu" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
   <pg><![CDATA[
 #############################################
 ###       Generated from PreTeXt source      

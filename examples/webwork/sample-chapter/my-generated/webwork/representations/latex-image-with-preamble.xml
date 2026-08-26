@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="20" xml:id="extracted-latex-image-with-preamble" assembly-id="latex-image-with-preamble">
+<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="21" xml:id="extracted-latex-image-with-preamble" assembly-id="latex-image-with-preamble">
   <static seed="67">
     <statement><p>What are the roots of this polynomial?</p>
 <!-- PTX:WARNING: PGML wanted to center align here. -->
@@ -14,7 +14,7 @@
       </p>
     </answer>
   </static>
-  <rendering-data problemSource="Integrating_WeBWorK_into_Textbooks/1-Instructive_Examples/1_8-Graphics_in_Exercises/1_8_3-A_lateximage_graph_affected_by_lateximagepreamble.pg" origin="generated" domain="https://webwork-ptx.aimath.org" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
+  <rendering-data problemSource="Integrating_WeBWorK_into_Textbooks/1-Instructive_Examples/1_8-Graphics_in_Exercises/1_8_3-A_lateximage_graph_affected_by_lateximagepreamble.pg" origin="generated" domain="https://webwork.pcc.edu" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
   <pg><![CDATA[
 #############################################
 ###       Generated from PreTeXt source      

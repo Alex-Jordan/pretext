@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="20" xml:id="extracted-answer-format-gallery" assembly-id="answer-format-gallery">
+<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="21" xml:id="extracted-answer-format-gallery" assembly-id="answer-format-gallery">
   <static seed="72">
     <statement><p>Nine flavors of answer, each blank linking to format help of its own kind.
 <ol label="a.">
@@ -78,7 +78,7 @@
       </p>
     </answer>
   </static>
-  <rendering-data problemSource="Integrating_WeBWorK_into_Textbooks/1-Instructive_Examples/1_9-Answer_Formats_and_Extra_Macros/1_9_1-A_Gallery_of_Answer_Formats.pg" origin="generated" domain="https://webwork-ptx.aimath.org" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
+  <rendering-data problemSource="Integrating_WeBWorK_into_Textbooks/1-Instructive_Examples/1_9-Answer_Formats_and_Extra_Macros/1_9_1-A_Gallery_of_Answer_Formats.pg" origin="generated" domain="https://webwork.pcc.edu" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
   <pg><![CDATA[
 #############################################
 ###       Generated from PreTeXt source      

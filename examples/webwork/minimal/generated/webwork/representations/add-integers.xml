@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="20" xml:id="extracted-add-integers" assembly-id="add-integers">
+<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="21" xml:id="extracted-add-integers" assembly-id="add-integers">
   <static seed="3">
     <statement><p>Compute the sum of <m>{3}</m> and <m>{1}\text{:}</m></p>
 <p><m>{3} + {1} =</m> <fillin characters="5" name="AnSwEr0001"/></p>
@@ -14,7 +14,7 @@
     <solution><p><m>{3} + {1} = {4}\text{.}</m></p>
 </solution>
   </static>
-  <rendering-data problemSource="WeBWorK_Minimal_Example/1-WeBWorK_Minimal_Section/1_1.pg" origin="generated" domain="https://webwork-ptx.aimath.org" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
+  <rendering-data problemSource="WeBWorK_Minimal_Example/1-WeBWorK_Minimal_Section/1_1.pg" origin="generated" domain="https://webwork.pcc.edu" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
   <pg><![CDATA[
 #############################################
 ###       Generated from PreTeXt source      
