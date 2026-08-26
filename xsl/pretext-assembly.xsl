@@ -2075,7 +2075,7 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
                     <xsl:copy>
                         <xsl:apply-templates select="node()|@*" mode="representations"/>
                     </xsl:copy>
-                    <xsl:message>PTX:ERROR:   could not load WeBWorK representation file "<xsl:value-of select="$webwork-rep-uri"/>" for @pi:assembly-id "<xsl:value-of select="@pi:assembly-id"/>"; re-generate the WeBWorK representations.  A "webwork-representations.xml" in that directory indicates old-format files that need replacing.</xsl:message>
+                    <xsl:message>PTX:ERROR:   could not load WeBWorK representation file "<xsl:value-of select="$webwork-rep-uri"/>" for @pi:assembly-id "<xsl:value-of select="@pi:assembly-id"/>"; re-generate the WeBWorK representations.</xsl:message>
                 </xsl:when>
                 <xsl:otherwise>
                     <!-- The representation file may record a server failure   -->
