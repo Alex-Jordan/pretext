@@ -13,6 +13,7 @@
 async function handleWW(ww_id, action) {
     const ww_container = document.getElementById(ww_id);
     const ww_domain = ww_container.dataset.domain;
+    const ww_minor_version = ww_container.dataset.webworkMinorVersion;
     const ww_processing = 'webwork2';
     const ww_origin = ww_container.dataset.origin;
     const ww_problemSource = ww_container.dataset.problemsource;
@@ -341,10 +342,14 @@ async function handleWW(ww_id, action) {
             courseUrlBase = '/ns/books/published/' + eBookConfig.basecourse + '/';
         }
 
+        let MathJaxSrc = ww_minor_version >= 21
+            ? `${ww_domain}/webwork2_files/node_modules/mathjax/tex-svg.js?version=%5E4.1.3`
+            : `${ww_domain}/webwork2_files/node_modules/mathjax/es5/tex-chtml.js`;
+
         let iframeContents = '<!DOCTYPE html><head>' +
             `<script src="${ww_domain}/webwork2_files/node_modules/jquery/dist/jquery.min.js"></script>` +
             `<script src="${ww_domain}/webwork2_files/js/MathJaxConfig/mathjax-config.js"></script>` +
-            `<script src="${ww_domain}/webwork2_files/node_modules/mathjax/es5/tex-chtml.js" id="MathJax-script" defer></script>` +
+            `<script src="${MathJaxSrc}" id="MathJax-script" defer></script>` +
             `<script src="${courseUrlBase}_static/pretext/js/dist/knowl.js" defer></script>` +
             `<link rel="stylesheet" href="${ww_domain}/webwork2_files/node_modules/bootstrap/dist/css/bootstrap.min.css"/>` +
             `<script src="${ww_domain}/webwork2_files/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>`;

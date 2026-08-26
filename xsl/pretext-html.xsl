@@ -11333,6 +11333,9 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:attribute name="data-domain">
             <xsl:value-of select="$webwork-server"/>
         </xsl:attribute>
+        <xsl:attribute name="data-webwork-minor-version">
+            <xsl:value-of select="@webwork2_minor_version"/>
+        </xsl:attribute>
         <xsl:attribute name="data-seed" >
             <xsl:value-of select="static/@seed"/>
         </xsl:attribute>

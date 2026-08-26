@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="20" xml:id="extracted-value-of-pi" assembly-id="value-of-pi">
+<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="21" xml:id="extracted-value-of-pi" assembly-id="value-of-pi">
   <static seed="5">
     <statement><p>Enter a value for <m>\pi</m>.</p>
 <p><fillin characters="5" name="AnSwEr0001"/></p>
@@ -13,7 +13,7 @@
 among other options.</p>
 </solution>
   </static>
-  <rendering-data problemSource="WeBWorK_Minimal_Example/1-WeBWorK_Minimal_Section/1_3.pg" origin="generated" domain="https://webwork-ptx.aimath.org" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
+  <rendering-data problemSource="WeBWorK_Minimal_Example/1-WeBWorK_Minimal_Section/1_3.pg" origin="generated" domain="https://webwork.pcc.edu" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
   <pg><![CDATA[
 ## DESCRIPTION
 ## Give a value for pi

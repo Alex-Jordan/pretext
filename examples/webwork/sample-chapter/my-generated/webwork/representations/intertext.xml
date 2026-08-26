@@ -1,18 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
-<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="20" xml:id="extracted-intertext" assembly-id="intertext">
+<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="21" xml:id="extracted-intertext" assembly-id="intertext">
   <static seed="53">
     <statement><p>Here, we solve an equation.</p>
-<p><me>\begin{aligned}
+<p><md>\begin{aligned}
 2x+1 \amp= 3
-\end{aligned}</me></p>
+\end{aligned}</md></p>
 <p>Now subtract <m>1</m> from each side.</p>
-<p><me>\begin{aligned}
+<p><md>\begin{aligned}
 2x   \amp= 2
-\end{aligned}</me></p>
+\end{aligned}</md></p>
 <p>Now divide by <m>2</m> on each side.</p>
-<p><me>\begin{aligned}
+<p><md>\begin{aligned}
 x    \amp= 1
-\end{aligned}</me></p>
+\end{aligned}</md></p>
 <p>We should also test when the <c>&lt;md&gt;</c> is within a list.
 <ol label="a.">
 <li>
@@ -20,17 +20,17 @@ x    \amp= 1
 </li>
 <li>
 <p><nbsp/></p>
-<p><me>\begin{aligned}
+<p><md>\begin{aligned}
     2x+1 \amp= 3
-    \end{aligned}</me></p>
+    \end{aligned}</md></p>
 <p>Now subtract <m>1</m> from each side.</p>
-<p><me>\begin{aligned}
+<p><md>\begin{aligned}
     2x   \amp= 2
-    \end{aligned}</me></p>
+    \end{aligned}</md></p>
 <p>Now divide by <m>2</m> on each side.</p>
-<p><me>\begin{aligned}
+<p><md>\begin{aligned}
     x    \amp= 1
-    \end{aligned}</me></p>
+    \end{aligned}</md></p>
 </li>
 <li>
 <p>Still in the list?</p>
@@ -38,7 +38,7 @@ x    \amp= 1
 </ol></p>
 </statement>
   </static>
-  <rendering-data problemSource="Integrating_WeBWorK_into_Textbooks/1-Instructive_Examples/1_5-Math_Content/1_5_2-Intertext.pg" origin="generated" domain="https://webwork-ptx.aimath.org" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
+  <rendering-data problemSource="Integrating_WeBWorK_into_Textbooks/1-Instructive_Examples/1_5-Math_Content/1_5_2-Intertext.pg" origin="generated" domain="https://webwork.pcc.edu" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
   <pg><![CDATA[
 #############################################
 ###       Generated from PreTeXt source      
