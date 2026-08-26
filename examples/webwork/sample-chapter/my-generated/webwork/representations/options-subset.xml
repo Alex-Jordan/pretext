@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="20" xml:id="extracted-options-subset" assembly-id="options-subset">
+<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="21" xml:id="extracted-options-subset" assembly-id="options-subset">
   <static seed="56">
     <statement><p>Select all expressions that are equivalent to <m>e^{x^2 + 1/x}\text{.}</m> There may be more than one correct answer.</p>
 <p><ul form="checkboxes" name="AnSwEr0001">
@@ -31,7 +31,7 @@
     <solution><p>The correct answer is Choice 1, Choice 3, Choice 5.</p>
 </solution>
   </static>
-  <rendering-data problemSource="Integrating_WeBWorK_into_Textbooks/1-Instructive_Examples/1_6-Multiple_Choice/1_6_3-Choose_a_Subset_of_Options.pg" origin="generated" domain="https://webwork-ptx.aimath.org" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
+  <rendering-data problemSource="Integrating_WeBWorK_into_Textbooks/1-Instructive_Examples/1_6-Multiple_Choice/1_6_3-Choose_a_Subset_of_Options.pg" origin="generated" domain="https://webwork.pcc.edu" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
   <pg><![CDATA[
 #############################################
 ###       Generated from PreTeXt source      

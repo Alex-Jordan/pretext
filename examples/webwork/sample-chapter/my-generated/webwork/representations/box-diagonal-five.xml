@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="20" xml:id="extracted-box-diagonal-five" assembly-id="box-diagonal-five">
+<webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="21" xml:id="extracted-box-diagonal-five" assembly-id="box-diagonal-five">
   <static seed="70">
     <statement><p>Find <m>D</m> when <m>L=4</m> and <m>W=3\text{.}</m></p>
 <p><fillin characters="10" name="AnSwEr0001"/></p>
@@ -13,7 +13,7 @@
 <image xmlns:pi="http://pretextbook.org/2020/pretext/internal" pi:generated="webwork/images/box-diagonal-five-image-1" width="100%"/>
 </solution>
   </static>
-  <rendering-data problemSource="Integrating_WeBWorK_into_Textbooks/1-Instructive_Examples/1_8-Graphics_in_Exercises/1_8_1.pg" origin="generated" domain="https://webwork-ptx.aimath.org" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
+  <rendering-data problemSource="Integrating_WeBWorK_into_Textbooks/1-Instructive_Examples/1_8-Graphics_in_Exercises/1_8_1.pg" origin="generated" domain="https://webwork.pcc.edu" course-id="anonymous" user-id="anonymous" passwd="anonymous" language="en-US"/>
   <pg><![CDATA[
 #############################################
 ###       Generated from PreTeXt source      

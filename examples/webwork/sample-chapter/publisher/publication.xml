@@ -30,7 +30,7 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
 
     <!-- These are the defaults but written explicitly here to serve as a model. -->
     <webwork
-        server="https://webwork-ptx.aimath.org"
+        server="https://webwork.pcc.edu"
         course="anonymous"
         user="anonymous"
         password="anonymous"
