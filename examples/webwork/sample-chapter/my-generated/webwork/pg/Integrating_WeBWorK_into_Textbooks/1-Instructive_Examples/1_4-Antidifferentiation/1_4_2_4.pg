@@ -42,15 +42,22 @@ COMMENT('Authored in PreTeXt');
 Context('Numeric');
 $answer = FormulaUpToConstant("-cos(x)");
 
-######
-# Body
-######
+#############################
+# Exercise Group Introduction
+#############################
 
 BEGIN_PGML
 For the given function [`f\text{,}`] find [`\indefiniteintegral{f(x)}{x}\text{.}`]
 
 Note that these common instructions are phrased in such a way that they would read well if they were applied to only one exercise at a time. That will happen if these exercises are exported as [|.pg|]* files, for example to be used in online homework from a WeBWorK server.
 
+END_PGML
+
+######
+# Body
+######
+
+BEGIN_PGML
 [`f(x)=\sin(x)`]
 
 [_]{$answer}{20}

@@ -43,7 +43,6 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
                      | exploration[@pi:exercise-interactive='fillin']//fillin
                      | investigation[@pi:exercise-interactive='fillin']//fillin
                      | task[@pi:exercise-interactive='fillin']//fillin">
-    <xsl:param name="b-human-readable" />
     <xsl:variable name="parent-id">
         <xsl:apply-templates select="ancestor::exercise" mode="html-id" />
     </xsl:variable>
