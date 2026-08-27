@@ -55,8 +55,12 @@
 <!-- 3.  path: a file path to a .pg version of the problem                 -->
 <!--         path-defined-by-document-structure                            -->
 <!--         path-defined-by-@source                                       -->
-<!-- 4.  pghuman: human readable PG (for generated exercises only)         -->
-<!-- 5.  PG that is somewhat minimized (and less human-readable)           -->
+<!-- 4.  pg: PG code for the problem (for generated exercises only)        -->
+<!--     pg/static: used for building static reps                          -->
+<!--     pg/dynamic: otherwise                                             -->
+<!--     The only differences should be that pg/static includes code to    -->
+<!--     refresh cached images, and pg/dynamic includes code for any       -->
+<!--     relevant exercisegroup introductions                              -->
 
 <!-- The pretext/pretext script (-c webwork) uses all this to write, for   -->
 <!-- each webwork exercise, an XML file of representations of that problem -->
@@ -209,33 +213,39 @@
         <xsl:attribute name="path">
             <xsl:apply-templates select="." mode="filename"/>
         </xsl:attribute>
+        <!-- 4. PG (for PTX-authored)                                              -->
         <xsl:choose>
             <xsl:when test="statement|task">
-                <!-- 4. human readable PG (for PTX-authored)                           -->
-                <pghuman>
-                    <xsl:variable name="pg">
-                        <xsl:apply-templates select=".">
-                            <xsl:with-param name="b-human-readable" select="true()"/>
-                        </xsl:apply-templates>
-                    </xsl:variable>
-                    <xsl:call-template name="consolidate-empty-lines">
-                        <xsl:with-param name="text" select="$pg"/>
-                    </xsl:call-template>
-                </pghuman>
-                <!-- 5. PG optimized (and less human-readable) for use in PTX output modes -->
-                <pgdense>
-                    <xsl:apply-templates select=".">
-                        <xsl:with-param name="b-human-readable" select="false()"/>
-                    </xsl:apply-templates>
-                </pgdense>
+                <pg>
+                    <static>
+                        <xsl:variable name="pg">
+                            <xsl:apply-templates select=".">
+                                <xsl:with-param name="static" select="true()"/>
+                            </xsl:apply-templates>
+                        </xsl:variable>
+                        <xsl:call-template name="consolidate-empty-lines">
+                            <xsl:with-param name="text" select="$pg"/>
+                        </xsl:call-template>
+                    </static>
+                    <dynamic>
+                        <xsl:variable name="pg">
+                            <xsl:apply-templates select="."/>
+                        </xsl:variable>
+                        <xsl:call-template name="consolidate-empty-lines">
+                            <xsl:with-param name="text" select="$pg"/>
+                        </xsl:call-template>
+                    </dynamic>
+                </pg>
             </xsl:when>
             <xsl:when test="text()">
-                <pghuman>
-                    <xsl:value-of select="text()"/>
-                </pghuman>
-                <pgdense>
-                    <xsl:value-of select="text()"/>
-                </pgdense>
+                <pg>
+                    <static>
+                        <xsl:value-of select="text()"/>
+                    </static>
+                    <dynamic>
+                        <xsl:value-of select="text()"/>
+                    </dynamic>
+                </pg>
             </xsl:when>
         </xsl:choose>
     </problem>
@@ -366,42 +376,38 @@
 
 
 <xsl:template match="webwork[statement]">
-    <xsl:param name="b-human-readable" />
+    <xsl:param name="static" select="false"/>
     <xsl:call-template name="converter-blurb-webwork" />
     <xsl:call-template name="webwork-metadata" />
     <xsl:text>DOCUMENT();&#xa;</xsl:text>
-    <xsl:apply-templates select="." mode="pg-macros">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates select="." mode="pg-macros"/>
     <xsl:text>COMMENT('</xsl:text>
     <xsl:apply-templates select="." mode="type-name">
         <xsl:with-param name="string-id" select="'authored'"/>
     </xsl:apply-templates>
     <xsl:text>');&#xa;</xsl:text>
     <xsl:apply-templates select="description"/>
-    <xsl:apply-templates select="." mode="pg-code">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
-    <xsl:apply-templates select="statement">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
-    <xsl:apply-templates select="hint">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
-    <xsl:apply-templates select="solution">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates select="." mode="pg-code"/>
+    <xsl:choose>
+        <xsl:when test="$static">
+            <xsl:apply-templates select="." mode="static"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:apply-templates select="." mode="dynamic"/>
+        </xsl:otherwise>
+    </xsl:choose>
+    <xsl:apply-templates select="statement"/>
+    <xsl:apply-templates select="hint"/>
+    <xsl:apply-templates select="solution"/>
     <xsl:call-template name="end-problem"/>
 </xsl:template>
 
 <xsl:template match="webwork[task]">
-    <xsl:param name="b-human-readable" />
+    <xsl:param name="static" select="false"/>
     <xsl:call-template name="converter-blurb-webwork" />
     <xsl:call-template name="webwork-metadata" />
     <xsl:text>DOCUMENT();&#xa;</xsl:text>
-    <xsl:apply-templates select="." mode="pg-macros">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates select="." mode="pg-macros"/>
     <xsl:text>COMMENT('</xsl:text>
     <xsl:apply-templates select="." mode="type-name">
         <xsl:with-param name="string-id" select="'authored'"/>
@@ -409,22 +415,21 @@
     <xsl:text>');&#xa;</xsl:text>
     <xsl:text>COMMENT('This problem is scaffolded with multiple parts');&#xa;</xsl:text>
     <xsl:apply-templates select="description"/>
-    <xsl:apply-templates select="." mode="pg-code">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates select="." mode="pg-code"/>
+    <xsl:choose>
+        <xsl:when test="$static">
+            <xsl:apply-templates select="." mode="static"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:apply-templates select="." mode="dynamic"/>
+        </xsl:otherwise>
+    </xsl:choose>
     <xsl:call-template name="begin-block">
         <xsl:with-param name="block-title">Body</xsl:with-param>
     </xsl:call-template>
-    <xsl:if test="ancestor::exercisegroup/introduction|introduction">
+    <xsl:if test="introduction">
         <xsl:text>&#xa;BEGIN_PGML&#xa;</xsl:text>
-        <xsl:if test="$b-human-readable">
-            <xsl:apply-templates select="ancestor::exercisegroup/introduction">
-                <xsl:with-param name="b-human-readable" select="$b-human-readable"/>
-            </xsl:apply-templates>
-        </xsl:if>
-        <xsl:apply-templates select="introduction">
-            <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-        </xsl:apply-templates>
+        <xsl:apply-templates select="introduction"/>
         <xsl:text>&#xa;END_PGML&#xa;</xsl:text>
     </xsl:if>
     <xsl:call-template name="begin-block">
@@ -444,24 +449,35 @@
     </xsl:choose>
     <xsl:text>);</xsl:text>
     <xsl:text>&#xa;</xsl:text>
-    <xsl:apply-templates select="task">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates select="task"/>
     <xsl:text>&#xa;</xsl:text>
     <xsl:text>Scaffold::End();</xsl:text>
     <xsl:text>&#xa;</xsl:text>
     <xsl:if test="conclusion">
         <xsl:text>&#xa;BEGIN_PGML&#xa;</xsl:text>
-        <xsl:apply-templates select="conclusion">
-            <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-        </xsl:apply-templates>
+        <xsl:apply-templates select="conclusion"/>
         <xsl:text>&#xa;END_PGML&#xa;</xsl:text>
     </xsl:if>
     <xsl:call-template name="end-problem"/>
 </xsl:template>
 
+<xsl:template match="webwork" mode="static">
+    <xsl:text>$refreshCachedImages=1;&#xa;</xsl:text>
+</xsl:template>
+
+<xsl:template match="webwork" mode="dynamic">
+    <xsl:apply-templates select="ancestor::exercisegroup/introduction//image[latex-image]" mode="latex-image-code"/>
+    <xsl:if test="ancestor::exercisegroup/introduction">
+        <xsl:call-template name="begin-block">
+            <xsl:with-param name="block-title">Exercise Group Introduction</xsl:with-param>
+        </xsl:call-template>
+        <xsl:text>&#xa;BEGIN_PGML&#xa;</xsl:text>
+        <xsl:apply-templates select="ancestor::exercisegroup/introduction"/>
+        <xsl:text>&#xa;END_PGML&#xa;</xsl:text>
+    </xsl:if>
+</xsl:template>
+
 <xsl:template match="task[statement]">
-    <xsl:param name="b-human-readable" />
     <xsl:call-template name="begin-block">
         <xsl:with-param name="block-title">Section</xsl:with-param>
     </xsl:call-template>
@@ -471,22 +487,15 @@
     </xsl:if>
     <xsl:text>");</xsl:text>
     <xsl:text>&#xa;</xsl:text>
-    <xsl:apply-templates select="statement">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
-    <xsl:apply-templates select="hint">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
-    <xsl:apply-templates select="solution">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates select="statement"/>
+    <xsl:apply-templates select="hint"/>
+    <xsl:apply-templates select="solution"/>
     <xsl:text>&#xa;</xsl:text>
     <xsl:text>Section::End();</xsl:text>
     <xsl:text>&#xa;</xsl:text>
 </xsl:template>
 
 <xsl:template match="task[task]">
-    <xsl:param name="b-human-readable" />
     <xsl:call-template name="begin-block">
         <xsl:with-param name="block-title">Section</xsl:with-param>
     </xsl:call-template>
@@ -498,9 +507,7 @@
     <xsl:text>&#xa;</xsl:text>
     <xsl:if test="introduction">
         <xsl:text>&#xa;BEGIN_PGML&#xa;</xsl:text>
-        <xsl:apply-templates select="introduction">
-            <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-        </xsl:apply-templates>
+        <xsl:apply-templates select="introduction"/>
         <xsl:text>&#xa;END_PGML&#xa;</xsl:text>
     </xsl:if>
     <xsl:call-template name="begin-block">
@@ -508,17 +515,13 @@
     </xsl:call-template>
     <xsl:text>Scaffold::Begin(numbered=&gt;1);</xsl:text>
     <xsl:text>&#xa;</xsl:text>
-    <xsl:apply-templates select="task">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates select="task"/>
     <xsl:text>&#xa;</xsl:text>
     <xsl:text>Scaffold::End();</xsl:text>
     <xsl:text>&#xa;</xsl:text>
     <xsl:if test="conclusion">
         <xsl:text>&#xa;BEGIN_PGML&#xa;</xsl:text>
-        <xsl:apply-templates select="conclusion">
-            <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-        </xsl:apply-templates>
+        <xsl:apply-templates select="conclusion"/>
         <xsl:text>&#xa;END_PGML&#xa;</xsl:text>
     </xsl:if>
     <xsl:text>&#xa;</xsl:text>
@@ -527,7 +530,6 @@
 </xsl:template>
 
 <xsl:template match="webwork" mode="pg-code">
-    <xsl:param name="b-human-readable" />
     <xsl:call-template name="begin-block">
         <xsl:with-param name="block-title">Setup</xsl:with-param>
     </xsl:call-template>
@@ -544,50 +546,32 @@
         </xsl:call-template>
     </xsl:if>
     <!-- if there are latex-image in the problem, put their code here -->
-    <!-- introduction images are not needed except for human readable code -->
-    <xsl:if test="$b-human-readable">
-        <xsl:apply-templates select="ancestor::exercisegroup/introduction//image[latex-image]" mode="latex-image-code"/>
-    </xsl:if>
     <xsl:apply-templates select=".//image[latex-image]" mode="latex-image-code"/>
 </xsl:template>
 
 <!-- default template, for complete presentation -->
 <xsl:template match="statement">
-    <xsl:param name="b-human-readable" />
     <xsl:call-template name="begin-block">
         <xsl:with-param name="block-title">Body</xsl:with-param>
     </xsl:call-template>
     <xsl:text>&#xa;BEGIN_PGML&#xa;</xsl:text>
-    <xsl:if test="$b-human-readable">
-        <xsl:apply-templates select="ancestor::exercisegroup/introduction">
-            <xsl:with-param name="b-human-readable" select="$b-human-readable"/>
-        </xsl:apply-templates>
-    </xsl:if>
-    <xsl:apply-templates select="*">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates select="*"/>
     <xsl:text>&#xa;END_PGML&#xa;</xsl:text>
 </xsl:template>
 
 <xsl:template match="task/statement">
-    <xsl:param name="b-human-readable" />
     <xsl:text>&#xa;BEGIN_PGML&#xa;</xsl:text>
-    <xsl:apply-templates select="*">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates select="*"/>
     <xsl:text>&#xa;END_PGML&#xa;</xsl:text>
 </xsl:template>
 
 <!-- default template, for solution -->
 <xsl:template match="solution">
-    <xsl:param name="b-human-readable" />
     <xsl:call-template name="begin-block">
         <xsl:with-param name="block-title">Solution</xsl:with-param>
     </xsl:call-template>
     <xsl:text>&#xa;BEGIN_PGML_SOLUTION&#xa;</xsl:text>
-    <xsl:apply-templates select="*">
-        <xsl:with-param  name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates select="*"/>
     <xsl:text>&#xa;END_PGML_SOLUTION&#xa;</xsl:text>
 </xsl:template>
 
@@ -603,10 +587,7 @@
 </xsl:template>
 
 <xsl:template match="introduction|conclusion">
-    <xsl:param name="b-human-readable" />
-    <xsl:apply-templates select="*">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable"/>
-    </xsl:apply-templates>
+    <xsl:apply-templates select="*"/>
     <xsl:if test="parent::exercisegroup">
         <xsl:text>&#xa;</xsl:text>
     </xsl:if>
@@ -659,7 +640,6 @@
 <!-- ############################## -->
 
 <!-- Mine various parts of the surrounding text -->
-<!-- Only ever called in human-readable mode    -->
 <xsl:template name="webwork-metadata">
     <xsl:text>## DBsubject(</xsl:text>
     <xsl:text>)&#xa;</xsl:text>
@@ -730,8 +710,6 @@
 <!-- call exactly once,        -->
 <!-- context is "webwork" root -->
 <xsl:template match="webwork" mode="pg-macros">
-    <xsl:param name="b-human-readable" />
-
     <xsl:call-template name="begin-block">
         <xsl:with-param name="block-title">Load Macros</xsl:with-param>
     </xsl:call-template>
@@ -772,7 +750,7 @@
                 <xsl:with-param name="string" select="'PGgraphmacros.pl'"/>
             </xsl:call-template>
         </xsl:if>
-        <xsl:if test=".//latex-image or ($b-human-readable and ancestor::exercisegroup/introduction//latex-image)">
+        <xsl:if test=".//latex-image or ancestor::exercisegroup/introduction//latex-image">
             <xsl:call-template name="macro-padding">
                 <xsl:with-param name="string" select="'PGlateximage.pl'"/>
             </xsl:call-template>
@@ -995,10 +973,6 @@
         <xsl:text>&#xa;</xsl:text>
     </xsl:variable>
     <xsl:value-of select="$load-macros" />
-    <!-- if images are used, explicitly refresh or stale images will be used in HTML -->
-    <xsl:if test="(.//image[@pg-name] or .//image[latex-image]) and not($b-human-readable)">
-        <xsl:text>$refreshCachedImages=1;</xsl:text>
-    </xsl:if>
 </xsl:template>
 
 <xsl:template name="macro-padding">
@@ -1332,13 +1306,10 @@
 <!-- line feed, then issue a blank line to signify the break. If p is     -->
 <!-- inside a list, special handling                                      -->
 <xsl:template match="p">
-    <xsl:param name="b-human-readable" />
     <xsl:if test="preceding-sibling::p and not(child::*[1][self::ol]|child::*[1][self::ul]) or ancestor::sidebyside">
         <xsl:call-template name="potential-list-indent" />
     </xsl:if>
-    <xsl:apply-templates>
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates/>
     <!-- If p is last thing in entire (maybe nested) list, explicitly terminate list with three spaces at end of line. -->
     <xsl:if test="parent::li and not(following-sibling::*) and not(following::li)">
         <xsl:text>   </xsl:text>
@@ -1459,7 +1430,6 @@
 <xsl:variable name="math.punctuation.include" select="'all'"/>
 
 <xsl:template match="m">
-    <xsl:param name="b-human-readable" />
     <xsl:text>[`</xsl:text>
     <xsl:apply-templates select="text()|var" />
     <!-- look ahead to absorb immediate clause-ending punctuation -->
@@ -1469,7 +1439,6 @@
 
 <!-- PGML [```...```] creates display math -->
 <xsl:template match="md[@pi:authored-one-line]">
-    <xsl:param name="b-human-readable" />
     <xsl:text>&#xa;&#xa;</xsl:text>
     <xsl:if test="ancestor::ul|ancestor::ol">
         <xsl:call-template name="potential-list-indent" />
@@ -1486,14 +1455,10 @@
 </xsl:template>
 
 <xsl:template match="md[not(@pi:authored-one-line)]">
-    <xsl:param name="b-human-readable" />
-    <xsl:apply-templates select="." mode="body">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable"/>
-    </xsl:apply-templates>
+    <xsl:apply-templates select="." mode="body"/>
 </xsl:template>
 
 <xsl:template match="md[not(@pi:authored-one-line)]" mode="body">
-    <xsl:param name="b-human-readable"/>
     <xsl:variable name="complete-latex">
         <xsl:text>&#xa;</xsl:text>
         <xsl:if test="ancestor::ul|ancestor::ol">
@@ -1515,7 +1480,6 @@
         <xsl:text>&#xa;</xsl:text>
     </xsl:variable>
     <xsl:apply-templates select="." mode="display-math-wrapper">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
         <xsl:with-param name="content" select="$complete-latex" />
     </xsl:apply-templates>
 </xsl:template>
@@ -1549,7 +1513,6 @@
 </xsl:template>
 
 <xsl:template match="md[mrow]" mode="display-math-wrapper">
-    <xsl:param name="b-human-readable" />
     <xsl:param name="content" />
     <xsl:text>&#xa;&#xa;</xsl:text>
     <xsl:if test="ancestor::ul|ancestor::ol">
@@ -1585,59 +1548,6 @@
     </xsl:if>
     <xsl:text>&#xa;</xsl:text>
 </xsl:template>
-
-<!-- ######### -->
-<!-- Groupings -->
-<!-- ######### -->
-
-<!-- We cannot rely on the -common templates for these,   -->
-<!-- because if they contain math, we need to respect the -->
-<!-- human readable parameter.                            -->
-
-<xsl:template match="q">
-    <xsl:param name="b-human-readable" />
-    <xsl:apply-templates select="." mode="lq-character"/>
-    <xsl:apply-templates>
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
-    <xsl:apply-templates select="." mode="rq-character"/>
-</xsl:template>
-
-<xsl:template match="sq">
-    <xsl:param name="b-human-readable" />
-    <xsl:apply-templates select="." mode="lsq-character"/>
-    <xsl:apply-templates>
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
-    <xsl:apply-templates select="." mode="rsq-character"/>
-</xsl:template>
-
-<xsl:template match="dblbrackets">
-    <xsl:param name="b-human-readable" />
-    <xsl:call-template name="character">
-        <xsl:with-param name="name" select="'ldblbracket'"/>
-    </xsl:call-template>
-    <xsl:apply-templates>
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
-    <xsl:call-template name="character">
-        <xsl:with-param name="name" select="'rdblbracket'"/>
-    </xsl:call-template>
-</xsl:template>
-
-<xsl:template match="angles">
-    <xsl:param name="b-human-readable" />
-    <xsl:call-template name="character">
-        <xsl:with-param name="name" select="'langle'"/>
-    </xsl:call-template>
-    <xsl:apply-templates>
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
-    <xsl:call-template name="character">
-        <xsl:with-param name="name" select="'rangle'"/>
-    </xsl:call-template>
-</xsl:template>
-
 
 <!-- ########################## -->
 <!-- Numbers, units, quantities -->
@@ -1764,7 +1674,7 @@
     <xsl:text>","TARGET='_blank'")@]*</xsl:text>
 </xsl:template>
 
-<!-- http://webwork.maa.org/wiki/Introduction_to_PGML#Basic_Formatting -->
+<!-- https://wiki.openwebwork.org/wiki/Introduction_to_PGML -->
 
 <!-- two spaces at line-end makes a newline in PGML-->
 <xsl:template match="cell/line">
@@ -2066,7 +1976,6 @@
 
 <!-- Implement PGML unordered lists -->
 <xsl:template match="ul|ol">
-    <xsl:param name="b-human-readable" />
     <!-- Lists are always inside a p.                                         -->
     <!-- If some text content or other elements precede the list within the p -->
     <!-- then line break to get a clean start. Otherwise do nothing; assume   -->
@@ -2074,9 +1983,7 @@
     <xsl:if test="preceding-sibling::text()[normalize-space()] or preceding-sibling::*">
         <xsl:text>&#xa;</xsl:text>
     </xsl:if>
-    <xsl:apply-templates select="li">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates select="li"/>
     <xsl:text>&#xa;</xsl:text>
     <!-- When a list ends, there may be more content before the p ends. This  -->
     <!-- content needs to be indented the proper amount when the list was a   -->
@@ -2088,7 +1995,6 @@
 </xsl:template>
 
 <xsl:template match="li">
-    <xsl:param name="b-human-readable" />
     <!-- Indent according to list depth; note this differs from potential-list-indent template. -->
     <xsl:call-template name="duplicate-string">
         <xsl:with-param name="count" select="4 * (count(ancestor::ul) + count(ancestor::ol) - 1)" />
@@ -2144,9 +2050,7 @@
                   )">
         <xsl:text>[$NBSP]*&#xa;</xsl:text>
     </xsl:if>
-    <xsl:apply-templates>
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:apply-templates>
+    <xsl:apply-templates/>
     <!-- Explicitly end lists with three trailing spaces when at the absolute end of all nested list -->
     <!-- in document order. For structured list items with p, image, tabular children, this trailing -->
     <!-- whitespace must be added in respective templates prior to their trailing line breaks.       -->

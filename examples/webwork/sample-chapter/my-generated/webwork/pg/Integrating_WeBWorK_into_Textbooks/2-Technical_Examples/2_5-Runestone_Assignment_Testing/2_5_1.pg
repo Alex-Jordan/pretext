@@ -49,9 +49,9 @@ $introduction_image_1->BEGIN_LATEX_IMAGE
 
 END_LATEX_IMAGE
 
-######
-# Body
-######
+#############################
+# Exercise Group Introduction
+#############################
 
 BEGIN_PGML
 This introduction should appear ahead of the exercise when it shows up in the Assignment page.
@@ -74,6 +74,13 @@ This introduction should appear ahead of the exercise when it shows up in the As
 
 It has a table and an image too to check it all comes through.
 
+END_PGML
+
+######
+# Body
+######
+
+BEGIN_PGML
 What is [`1+1\text{?}`]
 
 [_]{'2'}{5}>

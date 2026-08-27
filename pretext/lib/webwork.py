@@ -258,8 +258,8 @@ def webwork_to_xml(
     copied_from = {}
     seed = {}
     path = {}
-    pghuman = {}
-    pgdense = {}
+    pgdynamic = {}
+    pgstatic = {}
     for problem in extracted_pg_xml.iter("problem"):
         origin[problem.get("id")] = problem.get("origin")
         seed[problem.get("id")]   = problem.get("seed")
@@ -269,8 +269,8 @@ def webwork_to_xml(
         else:
             copied_from[problem.get("id")] = None
         if problem.get("origin") == "generated":
-            pghuman[problem.get("id")] = problem.find("pghuman").text
-            pgdense[problem.get("id")] = problem.find("pgdense").text
+            pgdynamic[problem.get("id")] = problem.find("pg/dynamic").text
+            pgstatic[problem.get("id")] = problem.find("pg/static").text
 
     if webwork2_major_version != 2 or webwork2_minor_version < 19:
         msg = (
@@ -342,7 +342,7 @@ def webwork_to_xml(
             socket_params = { "problemSeed": seed[problem], "problemUUID": problem }
 
             if origin[problem] == 'generated':
-                socket_params["source"] = pgdense[problem]
+                socket_params["source"] = pgstatic[problem]
             else:
                 socket_params["sourceFilePath"] = os.path.join(external_dir, path[problem])
 
@@ -366,7 +366,7 @@ def webwork_to_xml(
             if origin[problem] == "webwork2":
                 server_params_source = {"sourceFilePath":path[problem]}
             else:
-                server_params_source = {"rawProblemSource":pgdense[problem]}
+                server_params_source = {"rawProblemSource":pgstatic[problem]}
 
             server_params = {
                 "showSolutions": "1",
@@ -393,7 +393,7 @@ def webwork_to_xml(
             elif origin[problem] == "generated":
                 log.debug(
                     "server-to-ptx: {}\n{}\n{}\n{}".format(
-                        problem, webwork2_path, pgdense[problem], ww_reps_dir
+                        problem, webwork2_path, pgstatic[problem], ww_reps_dir
                     )
                 )
 
@@ -470,7 +470,7 @@ def webwork_to_xml(
             if badness:
                 debugging_help = response
                 if origin[problem] == "generated" and no_compile:
-                    debugging_help += "\n" + pghuman[problem]
+                    debugging_help += "\n" + pgstatic[problem]
                 raise ValueError(
                     badness_msg.format(
                         path[problem], seed[problem], debugging_help
@@ -813,7 +813,7 @@ def webwork_to_xml(
                     badness_msg.format(path[problem], seed[problem], badness_tip)
                 )
             else:
-                formatted_pg = pghuman[problem]
+                formatted_pg = pgdynamic[problem]
             pg.text = ET.CDATA("\n" + formatted_pg)
         elif origin[problem] == "webwork2":
             pg.set("source", path[problem])
