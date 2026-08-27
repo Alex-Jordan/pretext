@@ -5746,6 +5746,11 @@
     </element>
   </define>
   <define name="Configuration" combine="choice">
+    <element name="pg-macros">
+      <text/>
+    </element>
+  </define>
+  <define name="Configuration" combine="choice">
     <element name="logo">
       <attribute name="source"/>
       <attribute name="llx"/>

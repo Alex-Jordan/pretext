@@ -39,12 +39,13 @@ COMMENT('Authored in PreTeXt');
 #######
 
 Context('Numeric');
+($W, $L, $D) = @{random_pythagorean_triple()};
 
 $image_1 = createLaTeXImage();
 $image_1->addToPreamble(latexImagePreamble());
 $image_1->BEGIN_LATEX_IMAGE
 \begin{tikzpicture}
-    \draw (0,0) --++ (4,0) node[below,pos=0.5] {\(12\)} --++ (0,3) node[right,pos=0.5] {\(5\)} --++ (-4,-3) node[above,sloped,pos=0.5] {\(13\)} --++ (0,3) --++ (4,0);
+    \draw (0,0) --++ (4,0) node[below,pos=0.5] {\($L\)} --++ (0,3) node[right,pos=0.5] {\($W\)} --++ (-4,-3) node[above,sloped,pos=0.5] {\($D\)} --++ (0,3) --++ (4,0);
 \end{tikzpicture}
 
 END_LATEX_IMAGE
@@ -74,9 +75,9 @@ END_PGML
 ######
 
 BEGIN_PGML
-Find [`D`] when [`L=12`] and [`W=5\text{.}`]
+Find [`D`] when [`L=[$L]`] and [`W=[$W]\text{.}`]
 
-[_]{'13'}{10}
+[_]{$D}{10}
 
 END_PGML
 

@@ -68,6 +68,16 @@
                 }
             }
         </latex-image-preamble>
+
+        <pg-macros>
+            sub random_pythagorean_triple() {
+                return list_random(
+                    [3, 4, 5],
+                    [5, 12, 13],
+                    [8, 5, 17]
+                )
+            }
+        </pg-macros>
     </docinfo>
 
     <book xml:id="sample-ww-chapter">
@@ -1446,20 +1456,23 @@ ENDDOCUMENT();
                             </image>
                         </introduction>
                         <exercise label="box-diagonal-five">
-                            <webwork seed="70">
+                            <webwork seed="470">
+                                <pg-code>
+                                    ($W, $L, $D) = @{random_pythagorean_triple()};
+                                </pg-code>
                                 <statement>
                                     <p>
-                                        Find <m>D</m> when <m>L=4</m> and <m>W=3</m>.
+                                        Find <m>D</m> when <m>L=<var name="$L"/></m> and <m>W=<var name="$W"/></m>.
                                     </p>
                                     <p>
-                                        <var name="'5'" width="10"/>
+                                        <var name="$D" width="10"/>
                                     </p>
                                 </statement>
                                 <solution>
                                     <image>
                                       <latex-image>
                                         \begin{tikzpicture}
-                                            \draw (0,0) --++ (4,0) node[below,pos=0.5] {\(4\)} --++ (0,3) node[right,pos=0.5] {\(3\)} --++ (-4,-3) node[above,sloped,pos=0.5] {\(5\)} --++ (0,3) --++ (4,0);
+                                            \draw (0,0) --++ (4,0) node[below,pos=0.5] {\($L\)} --++ (0,3) node[right,pos=0.5] {\($W\)} --++ (-4,-3) node[above,sloped,pos=0.5] {\($D\)} --++ (0,3) --++ (4,0);
                                         \end{tikzpicture}
                                       </latex-image>
                                     </image>
@@ -1467,20 +1480,23 @@ ENDDOCUMENT();
                             </webwork>
                         </exercise>
                         <exercise label="box-diagonal-thirteen">
-                            <webwork seed="71">
+                            <webwork seed="871">
+                                <pg-code>
+                                    ($W, $L, $D) = @{random_pythagorean_triple()};
+                                </pg-code>
                                 <statement>
                                     <p>
-                                        Find <m>D</m> when <m>L=12</m> and <m>W=5</m>.
+                                        Find <m>D</m> when <m>L=<var name="$L"/></m> and <m>W=<var name="$W"/></m>.
                                     </p>
                                     <p>
-                                        <var name="'13'" width="10"/>
+                                        <var name="$D" width="10"/>
                                     </p>
                                 </statement>
                                 <solution>
                                     <image>
                                       <latex-image>
                                         \begin{tikzpicture}
-                                            \draw (0,0) --++ (4,0) node[below,pos=0.5] {\(12\)} --++ (0,3) node[right,pos=0.5] {\(5\)} --++ (-4,-3) node[above,sloped,pos=0.5] {\(13\)} --++ (0,3) --++ (4,0);
+                                            \draw (0,0) --++ (4,0) node[below,pos=0.5] {\($L\)} --++ (0,3) node[right,pos=0.5] {\($W\)} --++ (-4,-3) node[above,sloped,pos=0.5] {\($D\)} --++ (0,3) --++ (4,0);
                                         \end{tikzpicture}
                                       </latex-image>
                                     </image>

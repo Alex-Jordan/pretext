@@ -3955,6 +3955,7 @@
             <fragref ref="authorbiographylength" />
             <fragref ref="defaults" />
             <fragref ref="doenetml" />
+            <fragref ref="pg-macros" />
             <fragref ref="logo" />
             <fragref ref="blurb" />
             <fragref ref="document-id" />
@@ -4086,6 +4087,16 @@
                 element doenetml {
                     attribute version {text}
                 }
+            </code>
+        </fragment>
+
+        <p>PG macros can be defined for use within pg-code.</p>
+
+        <fragment xml:id="pg-macros">
+            <title>PG macros</title>
+            <code>
+            Configuration |=
+                element pg-macros {text}
             </code>
         </fragment>
 
