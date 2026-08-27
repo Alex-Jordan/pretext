@@ -4,6 +4,14 @@
 #############################################################################
 
 
+sub random_pythagorean_triple() {
+    return list_random(
+        [3, 4, 5],
+        [5, 12, 13],
+        [8, 5, 17]
+    )
+}
+
 TEXT(
     MODES(
         HTML => '<div style="display:none;">' . general_math_ev3(<<'EOF') . '</div>',

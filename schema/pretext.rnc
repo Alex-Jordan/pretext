@@ -2281,6 +2281,9 @@
                 }
 
             Configuration |=
+                element pg-macros {text}
+
+            Configuration |=
                 element logo {
                     attribute source {text},
                     attribute llx {text},
