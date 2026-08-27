@@ -975,6 +975,15 @@
                         List
                     )+
                 }
+            StackWW =
+                element stack {
+                    (
+                        Tabular |
+                        ImageWW |
+                        Paragraph |
+                        Preformatted
+                    )+
+                }
             SidebySideAttributes =
                 Component?,
                 attribute margins {text}?,
@@ -1039,6 +1048,17 @@
                 element sidebyside {
                     SidebySideAttributes,
                     PanelNoNumber, PanelNoNumber+
+                }
+            SideBySideWW =
+                element sidebyside {
+                    SidebySideAttributes,
+                    (
+                        Tabular |
+                        Image |
+                        Paragraph |
+                        Preformatted |
+                        StackWW
+                    )+
                 }
             # a group of one "sidebyside" is no group: the layout
             # attributes might as well sit on the lone "sidebyside"
@@ -1616,7 +1636,8 @@
                         Paragraph |
                         Preformatted |
                         Tabular |
-                        ImageWW
+                        ImageWW |
+                        SideBySideWW
             StatementExerciseWW =
                 element statement {
                     (BlockStatementWW|WWInstruction)+
