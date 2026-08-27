@@ -37,9 +37,10 @@
 
 DOCUMENT();
 
-############################################################
+#############
 # Load Macros
-############################################################
+#############
+
 loadMacros(
   "PGstandard.pl",
   "PGML.pl",
@@ -51,13 +52,10 @@ loadMacros(
 );
 COMMENT('Authored in PreTeXt');
 
-############################################################
-# Header
-############################################################
+#######
+# Setup
+#######
 
-############################################################
-# PG Setup Code
-############################################################
 Context("ArbitraryString");
 $platypus = Compute("platypus")->cmp(checker => sub {
   my ($correct,$student,$ans) = @_;
@@ -81,9 +79,9 @@ $image_1->BEGIN_LATEX_IMAGE
 
 END_LATEX_IMAGE
 
-############################################################
+######
 # Body
-############################################################
+######
 
 BEGIN_PGML
 This Venn Diagram groups animals by certain characteristics.
@@ -96,9 +94,9 @@ Name an animal that belongs in the center region. Spelling counts!
 
 END_PGML
 
-############################################################
+#############
 # End Problem
-############################################################
+#############
 
 ENDDOCUMENT();
 ]]></pg>

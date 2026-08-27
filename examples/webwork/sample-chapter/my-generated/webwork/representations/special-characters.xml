@@ -32,9 +32,10 @@
 
 DOCUMENT();
 
-############################################################
+#############
 # Load Macros
-############################################################
+#############
+
 loadMacros(
   "PGstandard.pl",
   "PGML.pl",
@@ -45,13 +46,10 @@ loadMacros(
 );
 COMMENT('Authored in PreTeXt');
 
-############################################################
-# Header
-############################################################
+#######
+# Setup
+#######
 
-############################################################
-# PG Setup Code
-############################################################
 Context('Numeric');
 
 $image_1 = createLaTeXImage();
@@ -65,9 +63,9 @@ $image_1->BEGIN_LATEX_IMAGE
 
 END_LATEX_IMAGE
 
-############################################################
+######
 # Body
-############################################################
+######
 
 BEGIN_PGML
 The code below has a printed dollar sign, a printed percent sign, a printed at sign, and a percent sign used as a comment marker.
@@ -76,9 +74,9 @@ The code below has a printed dollar sign, a printed percent sign, a printed at s
 
 END_PGML
 
-############################################################
+#############
 # End Problem
-############################################################
+#############
 
 ENDDOCUMENT();
 ]]></pg>

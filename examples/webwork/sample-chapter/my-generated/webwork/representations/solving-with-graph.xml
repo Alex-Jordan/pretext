@@ -44,9 +44,10 @@
 
 DOCUMENT();
 
-############################################################
+#############
 # Load Macros
-############################################################
+#############
+
 loadMacros(
   "PGstandard.pl",
   "PGML.pl",
@@ -59,13 +60,10 @@ loadMacros(
 );
 COMMENT('Authored in PreTeXt');
 
-############################################################
-# Header
-############################################################
+#######
+# Setup
+#######
 
-############################################################
-# PG Setup Code
-############################################################
 $a = random(1,3,1);
 $gr = init_graph(-1,-1,4,4,
 axes=>[0,0],
@@ -86,9 +84,9 @@ $solgr->arrowTo($a,0,'black',3);
 Context("FiniteSolutionSets");
 $answer = Formula("{$a}");
 
-############################################################
+######
 # Body
-############################################################
+######
 
 BEGIN_PGML
 The graph below is a graph of [`y=f(x)\text{.}`] Use the graph to solve the equation [`f(x)=1\text{.}`]
@@ -99,9 +97,9 @@ The graph below is a graph of [`y=f(x)\text{.}`] Use the graph to solve the equa
 
 END_PGML
 
-############################################################
+##########
 # Solution
-############################################################
+##########
 
 BEGIN_PGML_SOLUTION
 The graph reveals that the solution set to [`f(x)=1`] is [`[$answer]\text{.}`]
@@ -110,9 +108,9 @@ The graph reveals that the solution set to [`f(x)=1`] is [`[$answer]\text{.}`]
 
 END_PGML_SOLUTION
 
-############################################################
+#############
 # End Problem
-############################################################
+#############
 
 ENDDOCUMENT();
 ]]></pg>

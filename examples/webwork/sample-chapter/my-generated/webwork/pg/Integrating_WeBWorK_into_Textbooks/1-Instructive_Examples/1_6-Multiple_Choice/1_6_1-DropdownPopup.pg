@@ -20,9 +20,10 @@
 
 DOCUMENT();
 
-############################################################
+#############
 # Load Macros
-############################################################
+#############
+
 loadMacros(
   "PGstandard.pl",
   "PGML.pl",
@@ -33,39 +34,36 @@ loadMacros(
 );
 COMMENT('Authored in PreTeXt');
 
-############################################################
-# Header
-############################################################
+#######
+# Setup
+#######
 
-############################################################
-# PG Setup Code
-############################################################
 Context('Numeric');
 $rational = PopUp(
     ["?","is","is not",],
     "is not",
 );
 
-############################################################
+######
 # Body
-############################################################
+######
 
 BEGIN_PGML
 The number [`\sqrt{2}`] [_]{$rational}{5} rational.
 
 END_PGML
 
-############################################################
+##########
 # Solution
-############################################################
+##########
 
 BEGIN_PGML_SOLUTION
 If [`\sqrt{2}`] were rational, then [`\sqrt{2}=\frac{p}{q}\text{,}`] with [`p`] and [`q`] coprime. But then [`2q^2=p^2\text{.}`] By [@htmlLink("https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic#Canonical_representation_of_a_positive_integer","the Fundamental Theorem of Arithmetic","TARGET='_blank'")@]*, the power of [`2`] dividing the left side is odd, while the power of [`2`] dividing the right side is even. This is a contradiction, so [`\sqrt{2}`] [$rational] rational.
 
 END_PGML_SOLUTION
 
-############################################################
+#############
 # End Problem
-############################################################
+#############
 
 ENDDOCUMENT();

@@ -57,9 +57,10 @@
 
 DOCUMENT();
 
-############################################################
+#############
 # Load Macros
-############################################################
+#############
+
 loadMacros(
   "PGstandard.pl",
   "PGML.pl",
@@ -70,13 +71,10 @@ loadMacros(
 );
 COMMENT('Authored in PreTeXt');
 
-############################################################
-# Header
-############################################################
+#######
+# Setup
+#######
 
-############################################################
-# PG Setup Code
-############################################################
 Context('Numeric');
 $a = random(2,5,1);
 $answer1 = Compute("sqrt(x-$a)");
@@ -85,9 +83,9 @@ $answer2 = Compute("ln(abs( x / (x-$a) ))");
 $answer2->{test_points} = [[-5],[-4],[1],[$a-1],[7],[8]];
 $answer2evaluator = $answer2 -> cmp() -> withPostFilter( AnswerHints( [Compute("ln(abs((x-$a)/x))"),] => "This is the opposite of correct...",));
 
-############################################################
+######
 # Body
-############################################################
+######
 
 BEGIN_PGML
 a.  Suppose the correct answer is [`\displaystyle [$answer1]\text{.}`]
@@ -100,18 +98,18 @@ a.  Suppose the correct answer is [`\displaystyle [$answer2]\text{.}`]
 
 END_PGML
 
-############################################################
+##########
 # Solution
-############################################################
+##########
 
 BEGIN_PGML_SOLUTION
 Solution explanation goes here.
 
 END_PGML_SOLUTION
 
-############################################################
+#############
 # End Problem
-############################################################
+#############
 
 ENDDOCUMENT();
 ]]></pg>

@@ -20,9 +20,10 @@
 
 DOCUMENT();
 
-############################################################
+#############
 # Load Macros
-############################################################
+#############
+
 loadMacros(
   "PGstandard.pl",
   "PGML.pl",
@@ -33,18 +34,15 @@ loadMacros(
 );
 COMMENT('Authored in PreTeXt');
 
-############################################################
-# Header
-############################################################
+#######
+# Setup
+#######
 
-############################################################
-# PG Setup Code
-############################################################
 Context('Numeric');
 
-############################################################
+######
 # Body
-############################################################
+######
 
 BEGIN_PGML
 Explain how we can use Corollary[$NBSP]*1.4.3 to say that every continuous function _always_ has a derivative. (And we will demonstrate here that you can use a  macro from [|docinfo|]*: [`\definiteintegral{1}{2}{\frac{1}{x}}{x}=\ln(2)\text{.}`] It will work in the WeBWorK problem, regardless of whether you are using images, MathJax, or hardcopy.)
@@ -53,8 +51,8 @@ Explain how we can use Corollary[$NBSP]*1.4.3 to say that every continuous funct
 
 END_PGML
 
-############################################################
+#############
 # End Problem
-############################################################
+#############
 
 ENDDOCUMENT();
