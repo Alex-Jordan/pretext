@@ -47,13 +47,20 @@ COMMENT('Authored in PreTeXt');
 
 Context('Numeric');
 
+#############################
+# Exercise Group Introduction
+#############################
+
+BEGIN_PGML
+These are inside an exercisegroup.
+
+END_PGML
+
 ######
 # Body
 ######
 
 BEGIN_PGML
-These are inside an exercisegroup.
-
 [`1+1=2`]
 
 END_PGML

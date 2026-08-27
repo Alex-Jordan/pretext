@@ -191,7 +191,6 @@
                                 <xsl:apply-templates select=".">
                                     <xsl:with-param name="b-hint" select="true()" />
                                     <xsl:with-param name="b-solution" select="true()" />
-                                    <xsl:with-param name="b-human-readable" select="true()" />
                                 </xsl:apply-templates>
                             </xsl:with-param>
                         </xsl:call-template>
