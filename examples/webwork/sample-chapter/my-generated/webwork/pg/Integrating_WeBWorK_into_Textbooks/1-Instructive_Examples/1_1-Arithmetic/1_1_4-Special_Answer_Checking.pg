@@ -20,9 +20,10 @@
 
 DOCUMENT();
 
-############################################################
+#############
 # Load Macros
-############################################################
+#############
+
 loadMacros(
   "PGstandard.pl",
   "PGML.pl",
@@ -36,13 +37,10 @@ loadMacros(
 );
 COMMENT('Authored in PreTeXt');
 
-############################################################
-# Header
-############################################################
+#######
+# Setup
+#######
 
-############################################################
-# PG Setup Code
-############################################################
 $a = random(1, 9, 1);
 $b = random(1, 9, 1);
 $c = $a + $b;
@@ -59,9 +57,9 @@ $evaluator = $answer->cmp()->withPostFilter(AnswerHints(
     [Compute("x^($product)")] =>
     "When multiplying terms with the same base, you do not multiply the exponents."));
 
-############################################################
+######
 # Body
-############################################################
+######
 
 BEGIN_PGML
 Use the properties of exponents to simplify [`[$expression]\text{.}`]
@@ -72,9 +70,9 @@ Use the properties of exponents to simplify [`[$expression]\text{.}`]
 
 END_PGML
 
-############################################################
+##########
 # Solution
-############################################################
+##########
 
 BEGIN_PGML_SOLUTION
 We _add_ the exponents as follows, while including a gratuitous reference to the quadratic formula:
@@ -88,8 +86,8 @@ We _add_ the exponents as follows, while including a gratuitous reference to the
 
 END_PGML_SOLUTION
 
-############################################################
+#############
 # End Problem
-############################################################
+#############
 
 ENDDOCUMENT();

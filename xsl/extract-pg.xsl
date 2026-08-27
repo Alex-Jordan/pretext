@@ -379,9 +379,6 @@
     </xsl:apply-templates>
     <xsl:text>');&#xa;</xsl:text>
     <xsl:apply-templates select="description"/>
-    <xsl:call-template name="pg-header">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:call-template>
     <xsl:apply-templates select="." mode="pg-code">
         <xsl:with-param name="b-human-readable" select="$b-human-readable" />
     </xsl:apply-templates>
@@ -412,9 +409,6 @@
     <xsl:text>');&#xa;</xsl:text>
     <xsl:text>COMMENT('This problem is scaffolded with multiple parts');&#xa;</xsl:text>
     <xsl:apply-templates select="description"/>
-    <xsl:call-template name="pg-header">
-        <xsl:with-param name="b-human-readable" select="$b-human-readable" />
-    </xsl:call-template>
     <xsl:apply-templates select="." mode="pg-code">
         <xsl:with-param name="b-human-readable" select="$b-human-readable" />
     </xsl:apply-templates>
@@ -535,7 +529,7 @@
 <xsl:template match="webwork" mode="pg-code">
     <xsl:param name="b-human-readable" />
     <xsl:call-template name="begin-block">
-        <xsl:with-param name="block-title">PG Setup Code</xsl:with-param>
+        <xsl:with-param name="block-title">Setup</xsl:with-param>
     </xsl:call-template>
     <!-- All our problems load MathObjects, and so should have at least    -->
     <!-- one explicit Context() load.                                      -->
@@ -716,16 +710,6 @@
         <xsl:value-of select="$document-language"/>
     <xsl:text>)&#xa;&#xa;</xsl:text>
 </xsl:template>
-
-
-<xsl:template name="pg-header">
-    <xsl:param name="b-human-readable" />
-    <xsl:call-template name="begin-block">
-        <xsl:with-param name="block-title">Header</xsl:with-param>
-    </xsl:call-template>
-    <xsl:text>&#xa;</xsl:text>
-</xsl:template>
-
 
 <!-- ############## -->
 <!-- Problem Ending -->
@@ -2622,11 +2606,19 @@
 <xsl:template name="begin-block">
     <xsl:param name="block-title"/>
     <xsl:text>&#xa;</xsl:text>
-    <xsl:text>############################################################&#xa;</xsl:text>
-    <xsl:text># </xsl:text>
+    <xsl:call-template name="duplicate-string">
+        <xsl:with-param name="text" select="'#'"/>
+        <xsl:with-param name="count" select="string-length($block-title) + 2"/>
+    </xsl:call-template>
+    <xsl:text>&#xa;# </xsl:text>
     <xsl:value-of select="$block-title"/>
     <xsl:text>&#xa;</xsl:text>
-    <xsl:text>############################################################&#xa;</xsl:text>
+    <xsl:call-template name="duplicate-string">
+        <xsl:with-param name="text" select="'#'"/>
+        <xsl:with-param name="count" select="string-length($block-title) + 2"/>
+    </xsl:call-template>
+    <xsl:text>&#xa;</xsl:text>
+    <xsl:text>&#xa;</xsl:text>
 </xsl:template>
 
 <!-- Base indentation for lines of code in the middle of a list -->
