@@ -2637,6 +2637,18 @@
       </oneOrMore>
     </element>
   </define>
+  <define name="StackWW">
+    <element name="stack">
+      <oneOrMore>
+        <choice>
+          <ref name="Tabular"/>
+          <ref name="ImageWW"/>
+          <ref name="Paragraph"/>
+          <ref name="Preformatted"/>
+        </choice>
+      </oneOrMore>
+    </element>
+  </define>
   <define name="SidebySideAttributes">
     <optional>
       <ref name="Component"/>
@@ -2757,6 +2769,20 @@
       <ref name="PanelNoNumber"/>
       <oneOrMore>
         <ref name="PanelNoNumber"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="SideBySideWW">
+    <element name="sidebyside">
+      <ref name="SidebySideAttributes"/>
+      <oneOrMore>
+        <choice>
+          <ref name="Tabular"/>
+          <ref name="Image"/>
+          <ref name="Paragraph"/>
+          <ref name="Preformatted"/>
+          <ref name="StackWW"/>
+        </choice>
       </oneOrMore>
     </element>
   </define>
@@ -4129,6 +4155,7 @@
       <ref name="Preformatted"/>
       <ref name="Tabular"/>
       <ref name="ImageWW"/>
+      <ref name="SideBySideWW"/>
     </choice>
   </define>
   <define name="StatementExerciseWW">
