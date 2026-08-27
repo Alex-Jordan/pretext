@@ -20,9 +20,10 @@
 
 DOCUMENT();
 
-############################################################
+#############
 # Load Macros
-############################################################
+#############
+
 loadMacros(
   "PGstandard.pl",
   "PGML.pl",
@@ -39,13 +40,10 @@ COMMENT('Authored in PreTeXt');
 COMMENT('This problem is scaffolded with multiple parts');
 COMMENT(q"Find a quadratic equation's solutions.", 'One positive integer solution and one negative fraction solution.');
 
-############################################################
-# Header
-############################################################
+#######
+# Setup
+#######
 
-############################################################
-# PG Setup Code
-############################################################
 Context("Fraction");
 $a = Compute(random(2,6,1));
 do {$k = Compute(random(2,6,1))} until (gcd($a,$k)==1);
@@ -70,23 +68,25 @@ $evaluatorforc = $c->cmp()->withPostFilter(AnswerHints(
 Context("FiniteSolutionSets");
 $solutionset = Formula("{$x1,$x2}");
 
-############################################################
+######
 # Body
-############################################################
+######
 
 BEGIN_PGML
 Consider the quadratic equation [`[$quadratic] = 0\text{.}`]
 
 END_PGML
 
-############################################################
+##########
 # Scaffold
-############################################################
+##########
+
 Scaffold::Begin(numbered => 1,is_open => "correct_or_first_incorrect",can_open => when_previous_correct,);
 
-############################################################
+#########
 # Section
-############################################################
+#########
+
 Section::Begin("Identify Coefficients");
 
 BEGIN_PGML
@@ -94,14 +94,16 @@ Identify the coefficients for the quadratic equation using the standard form fro
 
 END_PGML
 
-############################################################
+##########
 # Scaffold
-############################################################
+##########
+
 Scaffold::Begin(numbered=>1);
 
-############################################################
+#########
 # Section
-############################################################
+#########
+
 Section::Begin("");
 
 BEGIN_PGML
@@ -109,9 +111,9 @@ BEGIN_PGML
 
 END_PGML
 
-############################################################
+##########
 # Solution
-############################################################
+##########
 
 BEGIN_PGML_SOLUTION
 Take the coefficient of [`x^2`] for the value of [`a\text{.}`] _In this case_, [`a = [$a]\text{.}`]
@@ -120,9 +122,10 @@ END_PGML_SOLUTION
 
 Section::End();
 
-############################################################
+#########
 # Section
-############################################################
+#########
+
 Section::Begin("");
 
 BEGIN_PGML
@@ -130,9 +133,9 @@ BEGIN_PGML
 
 END_PGML
 
-############################################################
+##########
 # Solution
-############################################################
+##########
 
 BEGIN_PGML_SOLUTION
 Take the coefficient of [`x`] for the value of [`b\text{.}`] _In this case_, [`b = [$b]\text{.}`]
@@ -141,9 +144,10 @@ END_PGML_SOLUTION
 
 Section::End();
 
-############################################################
+#########
 # Section
-############################################################
+#########
+
 Section::Begin("");
 
 BEGIN_PGML
@@ -151,9 +155,9 @@ BEGIN_PGML
 
 END_PGML
 
-############################################################
+##########
 # Solution
-############################################################
+##########
 
 BEGIN_PGML_SOLUTION
 Take the constant term for the value of [`c\text{.}`] _In this case_, [`c = [$c]\text{.}`]
@@ -166,9 +170,10 @@ Scaffold::End();
 
 Section::End();
 
-############################################################
+#########
 # Section
-############################################################
+#########
+
 Section::Begin("Use the Quadratic Formula");
 
 BEGIN_PGML
@@ -178,9 +183,9 @@ Using the quadratic formula, solve the equation.
 
 END_PGML
 
-############################################################
+##########
 # Solution
-############################################################
+##########
 
 BEGIN_PGML_SOLUTION
 Recall that the quadratic formula is given in Theorem[$NBSP]*1.2.1.
@@ -204,8 +209,8 @@ This conclusion is just here for testing.
 
 END_PGML
 
-############################################################
+#############
 # End Problem
-############################################################
+#############
 
 ENDDOCUMENT();

@@ -42,9 +42,10 @@
 
 DOCUMENT();
 
-############################################################
+#############
 # Load Macros
-############################################################
+#############
+
 loadMacros(
   "PGstandard.pl",
   "PGML.pl",
@@ -56,13 +57,10 @@ loadMacros(
 );
 COMMENT('Authored in PreTeXt');
 
-############################################################
-# Header
-############################################################
+#######
+# Setup
+#######
 
-############################################################
-# PG Setup Code
-############################################################
 Context()->operators->set(
 '*' => {class => 'bizarro::BOP::multiply', isCommand => 1},
 ' *' => {class => 'bizarro::BOP::multiply', isCommand => 1},
@@ -88,9 +86,9 @@ $evaluator = $answer -> cmp(
   }
 );
 
-############################################################
+######
 # Body
-############################################################
+######
 
 BEGIN_PGML
 Simplify the expression [`[$given]\text{.}`]
@@ -99,9 +97,10 @@ Simplify the expression [`[$given]\text{.}`]
 
 END_PGML
 
-############################################################
+######
 # Hint
-############################################################
+######
+
 #Set value of $showHint in PGcourse.pl for course-wide attempt threshhold for revealing hints
 
 BEGIN_PGML_HINT
@@ -109,9 +108,9 @@ Add the exponents.
 
 END_PGML_HINT
 
-############################################################
+##########
 # Solution
-############################################################
+##########
 
 BEGIN_PGML_SOLUTION
 To simplify the product of two powers of the same base, add the exponents.
@@ -125,9 +124,9 @@ To simplify the product of two powers of the same base, add the exponents.
 
 END_PGML_SOLUTION
 
-############################################################
+#############
 # End Problem
-############################################################
+#############
 
 ENDDOCUMENT();
 ]]></pg>
