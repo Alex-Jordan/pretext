@@ -4,16 +4,16 @@
     <introduction><p>This problem has multiple parts that must be completed in order. Try answering the second part with various things you might expect a user to enter.</p>
 </introduction>
     <task><title>Identify Coefficients</title>
-<statement><p>Consider the equation</p>
-<p><md>{2x^{2}-7x-15} = 0</md></p>
-<p>Identify the coefficients for the quadratic equation using the standard form from Subsection<nbsp/>1.1.</p>
+<statement><p>Consider the equation
+<md>{2x^{2}-7x-15} = 0</md>
+Identify the coefficients for the quadratic equation using the standard form from Subsection<nbsp/>1.1.</p>
 <p><m>a=</m> <fillin characters="4" name="AnSwEr0001"/>, <m>b=</m> <fillin characters="4" name="AnSwEr0002"/>, <m>c=</m> <fillin characters="4" name="AnSwEr0003"/></p>
 </statement><answer><p><m>2</m></p></answer><answer><p><m>-7</m></p></answer><answer><p><m>-15</m></p></answer><solution><p>Take the coefficient of <m>x^2</m> for the value of <m>a\text{,}</m> the coefficient of <m>x</m> for <m>b\text{,}</m> and the constant for <m>c\text{.}</m> <em>In this case</em>, they are <m>a = 2\text{,}</m> <m>b = -7\text{,}</m> <m>c = -15\text{.}</m></p>
 </solution></task>
     <task><title>Use the Quadratic Formula</title>
-<statement><p>Use the quadratic formula to find the solution set to</p>
-<p><md>{2x^{2}-7x-15}=0</md></p>
-<p><fillin characters="30" name="AnSwEr0004"/></p>
+<statement><p>Use the quadratic formula to find the solution set to
+<md>{2x^{2}-7x-15}=0</md>
+<fillin characters="30" name="AnSwEr0004"/></p>
 </statement><answer><p><m>\frac{-3}{2}, 5</m></p></answer><solution><p>Recall that the quadratic formula is given in Subsection<nbsp/>1.1.</p>
 <p>You already identified <m>a = 2\text{,}</m> <m>b = -7\text{,}</m> and <m>c = -15\text{,}</m> and the results from using these in the quadratic formula are <m>-\frac{3}{2}</m> and <m>5\text{.}</m></p>
 </solution></task>
