@@ -1,34 +1,34 @@
 <?xml version='1.0' encoding='utf-8'?>
 <webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="21" xml:id="extracted-intertext" assembly-id="intertext">
   <static seed="53">
-    <statement><p>Here, we solve an equation.</p>
-<p><md>\begin{aligned}
+    <statement><p>Here, we solve an equation.
+<md>\begin{aligned}
 2x+1 \amp= 3
-\end{aligned}</md></p>
-<p>Now subtract <m>1</m> from each side.</p>
-<p><md>\begin{aligned}
+\end{aligned}</md>
+Now subtract <m>1</m> from each side.
+<md>\begin{aligned}
 2x   \amp= 2
-\end{aligned}</md></p>
-<p>Now divide by <m>2</m> on each side.</p>
-<p><md>\begin{aligned}
+\end{aligned}</md>
+Now divide by <m>2</m> on each side.
+<md>\begin{aligned}
 x    \amp= 1
-\end{aligned}</md></p>
-<p>We should also test when the <c>&lt;md&gt;</c> is within a list.
+\end{aligned}</md>
+We should also test when the <c>&lt;md&gt;</c> is within a list.
 <ol label="a.">
 <li>
 <p>Start a list.</p>
 </li>
 <li>
-<p><nbsp/></p>
-<p><md>\begin{aligned}
+<p><nbsp/>
+<md>\begin{aligned}
     2x+1 \amp= 3
-    \end{aligned}</md></p>
-<p>Now subtract <m>1</m> from each side.</p>
-<p><md>\begin{aligned}
+    \end{aligned}</md>
+Now subtract <m>1</m> from each side.
+<md>\begin{aligned}
     2x   \amp= 2
-    \end{aligned}</md></p>
-<p>Now divide by <m>2</m> on each side.</p>
-<p><md>\begin{aligned}
+    \end{aligned}</md>
+Now divide by <m>2</m> on each side.
+<md>\begin{aligned}
     x    \amp= 1
     \end{aligned}</md></p>
 </li>

@@ -8,8 +8,8 @@
         <m>28.3885180688169</m>
       </p>
     </answer>
-    <solution><p>SOLUTION</p>
-<p><md>\begin{array}{rcl} \displaystyle \int_0^{2} (4 e^x+2 \sin x)\, dx \amp =\amp   
+    <solution><p>SOLUTION 
+<md>\begin{array}{rcl} \displaystyle \int_0^{2} (4 e^x+2 \sin x)\, dx \amp =\amp   
 \displaystyle  4 e^x-2 \cos x  \Big]_0^{2}
 \\ \amp =\amp  (4 e^{2} - 2 \cos 2) - (4 e^0 - 2 \cos0 ) 
 \\ \amp =\amp  4 e^{2} - 2 \cos 2 - 2 

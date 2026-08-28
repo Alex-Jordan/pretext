@@ -16,10 +16,10 @@
 <statement><p>Using the quadratic formula, solve the equation.</p>
 <p><fillin characters="40" name="AnSwEr0004"/></p>
 </statement><answer><p><m>\left\{6,\frac{-2}{3}\right\}</m></p></answer><solution><p>Recall that the quadratic formula is given in Theorem<nbsp/>1.2.1.</p>
-<p>You already identified <m>a = {3}\text{,}</m> <m>b = {-16}\text{,}</m> and <m>c = {-12}\text{,}</m> so the results are:</p>
-<p><md>x = {\frac{-\left(-16\right)+\sqrt{\left(-16\right)^{2}-4\cdot 3\cdot \left(-12\right)}}{2\cdot 3}} = {6}</md></p>
-<p>or</p>
-<p><md>x = {\frac{-\left(-16\right)-\sqrt{\left(-16\right)^{2}-4\cdot 3\cdot \left(-12\right)}}{2\cdot 3}} = {-{\frac{2}{3}}}</md></p>
+<p>You already identified <m>a = {3}\text{,}</m> <m>b = {-16}\text{,}</m> and <m>c = {-12}\text{,}</m> so the results are:
+<md>x = {\frac{-\left(-16\right)+\sqrt{\left(-16\right)^{2}-4\cdot 3\cdot \left(-12\right)}}{2\cdot 3}} = {6}</md>
+or
+<md>x = {\frac{-\left(-16\right)-\sqrt{\left(-16\right)^{2}-4\cdot 3\cdot \left(-12\right)}}{2\cdot 3}} = {-{\frac{2}{3}}}</md></p>
 </solution></task>
     <conclusion><p>This conclusion is just here for testing.</p>
 </conclusion>
