@@ -9,8 +9,8 @@
         <m>x^{8}</m>
       </p>
     </answer>
-    <solution><p>We <em>add</em> the exponents as follows, while including a gratuitous reference to the quadratic formula:</p>
-<p><md>\begin{aligned}
+    <solution><p>We <em>add</em> the exponents as follows, while including a gratuitous reference to the quadratic formula:
+<md>\begin{aligned}
 {x^{5}x^{3}}\amp =x^{5+3}\amp \text{Theorem 1.2.1}\\
 \amp =x^{8}
 \end{aligned}</md></p>

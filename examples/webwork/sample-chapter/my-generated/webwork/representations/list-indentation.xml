@@ -166,176 +166,176 @@
 <p>And after.</p>
 <p><ol label="a.">
 <li>
-<p><nbsp/></p>
-<p><md>1+1=2</md></p>
-<p>Structured item</p>
-<p>Second</p>
-<p><md>1+1=2</md></p>
-<p>paragraph</p>
+<p><nbsp/>
+<md>1+1=2</md>
+Structured item</p>
+<p>Second
+<md>1+1=2</md>
+paragraph</p>
 </li>
 <li>
 <p><nbsp/>
 <ol label="a.">
 <li>
-<p>Sublist</p>
-<p><md>1+1=2</md></p>
-<p>Item</p>
-<p>Second paragraph</p>
-<p><md>1+1=2</md></p>
+<p>Sublist
+<md>1+1=2</md>
+Item</p>
+<p>Second paragraph
+<md>1+1=2</md></p>
 </li>
 <li>
-<p><nbsp/></p>
-<p><md>1+1=2</md></p>
-<p>Sublist Item</p>
-<p>Second</p>
-<p><md>1+1=2</md></p>
-<p>paragraph</p>
+<p><nbsp/>
+<md>1+1=2</md>
+Sublist Item</p>
+<p>Second
+<md>1+1=2</md>
+paragraph</p>
 </li>
 <li>
-<p>Sublist Item</p>
-<p><md>1+1=2</md></p>
-<p><md>1+1=2</md></p>
-<p>Second paragraph</p>
+<p>Sublist Item
+<md>1+1=2</md>
+<md>1+1=2</md>
+Second paragraph</p>
 </li>
 </ol></p>
 </li>
 <li>
-<p>Structured</p>
-<p><md>1+1=2</md></p>
-<p>item</p>
-<p>Second paragraph</p>
-<p><md>1+1=2</md></p>
+<p>Structured
+<md>1+1=2</md>
+item</p>
+<p>Second paragraph
+<md>1+1=2</md></p>
 </li>
 </ol></p>
 <p>Text before.
 <ol label="a.">
 <li>
-<p>Structured</p>
-<p><md>1+1=2</md></p>
-<p>item</p>
-<p>Second paragraph</p>
-<p><md>1+1=2</md></p>
+<p>Structured
+<md>1+1=2</md>
+item</p>
+<p>Second paragraph
+<md>1+1=2</md></p>
 </li>
 <li>
-<p><nbsp/></p>
-<p><md>1+1=2</md></p>
-<p>Text before.
+<p><nbsp/>
+<md>1+1=2</md>
+Text before.
 <ol label="A.">
 <li>
-<p>Sublist</p>
-<p><md>1+1=2</md></p>
-<p>Item</p>
-<p>Second paragraph</p>
-<p><md>1+1=2</md></p>
+<p>Sublist
+<md>1+1=2</md>
+Item</p>
+<p>Second paragraph
+<md>1+1=2</md></p>
 </li>
 <li>
-<p><nbsp/></p>
-<p><md>1+1=2</md></p>
-<p>Sublist Item</p>
-<p>Second</p>
-<p><md>1+1=2</md></p>
-<p>paragraph</p>
+<p><nbsp/>
+<md>1+1=2</md>
+Sublist Item</p>
+<p>Second
+<md>1+1=2</md>
+paragraph</p>
 </li>
 <li>
-<p>Sublist Item</p>
-<p><md>1+1=2</md></p>
-<p><md>1+1=2</md></p>
-<p>Second paragraph</p>
+<p>Sublist Item
+<md>1+1=2</md>
+<md>1+1=2</md>
+Second paragraph</p>
 </li>
 </ol></p>
-<p>And</p>
-<p><md>1+1=2</md></p>
-<p>after.</p>
+<p>And
+<md>1+1=2</md>
+after.</p>
 </li>
 <li>
-<p>Structured item</p>
-<p><md>1+1=2</md></p>
-<p><md>1+1=2</md></p>
-<p>Second paragraph</p>
+<p>Structured item
+<md>1+1=2</md>
+<md>1+1=2</md>
+Second paragraph</p>
 </li>
 </ol></p>
 <p>And after.</p>
 <p>Text before.
 <ol label="a.">
 <li>
-<p>Structured</p>
-<p><md>\begin{aligned}
+<p>Structured
+<md>\begin{aligned}
     1+1\amp=2\\
     2\amp=2
-    \end{aligned}</md></p>
-<p>item</p>
-<p>Second paragraph</p>
-<p><md>\begin{aligned}
+    \end{aligned}</md>
+item</p>
+<p>Second paragraph
+<md>\begin{aligned}
     1+1\amp=2\\
     2\amp=2
     \end{aligned}</md></p>
 </li>
 <li>
-<p><nbsp/></p>
-<p><md>\begin{aligned}
+<p><nbsp/>
+<md>\begin{aligned}
     1+1\amp=2\\
     2\amp=2
-    \end{aligned}</md></p>
-<p>Text before.
+    \end{aligned}</md>
+Text before.
 <ol label="i.">
 <li>
-<p>Sublist</p>
-<p><md>\begin{aligned}
+<p>Sublist
+<md>\begin{aligned}
         1+1\amp=2\\
         2\amp=2
-        \end{aligned}</md></p>
-<p>Item</p>
-<p>Second paragraph</p>
-<p><md>\begin{aligned}
+        \end{aligned}</md>
+Item</p>
+<p>Second paragraph
+<md>\begin{aligned}
         1+1\amp=2\\
         2\amp=2
         \end{aligned}</md></p>
 </li>
 <li>
-<p><nbsp/></p>
-<p><md>\begin{aligned}
+<p><nbsp/>
+<md>\begin{aligned}
         1+1\amp=2\\
         2\amp=2
-        \end{aligned}</md></p>
-<p>Sublist Item</p>
-<p>Second</p>
-<p><md>\begin{aligned}
+        \end{aligned}</md>
+Sublist Item</p>
+<p>Second
+<md>\begin{aligned}
         1+1\amp=2\\
         2\amp=2
-        \end{aligned}</md></p>
-<p>paragraph</p>
+        \end{aligned}</md>
+paragraph</p>
 </li>
 <li>
-<p>Sublist Item</p>
-<p><md>\begin{aligned}
+<p>Sublist Item
+<md>\begin{aligned}
         1+1\amp=2\\
         2\amp=2
-        \end{aligned}</md></p>
-<p><md>\begin{aligned}
+        \end{aligned}</md>
+<md>\begin{aligned}
         1+1\amp=2\\
         2\amp=2
-        \end{aligned}</md></p>
-<p>Second paragraph</p>
+        \end{aligned}</md>
+Second paragraph</p>
 </li>
 </ol></p>
-<p>And</p>
-<p><md>\begin{aligned}
+<p>And
+<md>\begin{aligned}
     1+1\amp=2\\
     2\amp=2
-    \end{aligned}</md></p>
-<p>after.</p>
+    \end{aligned}</md>
+after.</p>
 </li>
 <li>
-<p>Structured item</p>
-<p><md>\begin{aligned}
+<p>Structured item
+<md>\begin{aligned}
     1+1\amp=2\\
     2\amp=2
-    \end{aligned}</md></p>
-<p><md>\begin{aligned}
+    \end{aligned}</md>
+<md>\begin{aligned}
     1+1\amp=2\\
     2\amp=2
-    \end{aligned}</md></p>
-<p>Second paragraph</p>
+    \end{aligned}</md>
+Second paragraph</p>
 </li>
 </ol></p>
 <p>And after.</p>

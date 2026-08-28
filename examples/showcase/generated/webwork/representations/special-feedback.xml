@@ -11,8 +11,8 @@
         <m>x^{7}</m>
       </p>
     </answer>
-    <solution><p>To simplify the product of two powers of the same base, add the exponents.</p>
-<p><md>\begin{aligned}
+    <solution><p>To simplify the product of two powers of the same base, add the exponents.
+<md>\begin{aligned}
 {x^{2}x^{5}}\amp=x^{2+5}\\
 \amp={x^{7}}
 \end{aligned}</md></p>
