@@ -1587,11 +1587,13 @@
                         UniqueID?,
                         LabelID?,
                         Component?,
-                        attribute copy {text},
                         attribute seed {xsd:integer}?,
-                        empty
-                    ) |
-                    text
+                        (
+                            attribute copy {text},
+                            empty
+                        ) |
+                        text
+                    )
                 }
             BlockStatementWW =
                         Paragraph |
