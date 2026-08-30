@@ -738,13 +738,6 @@
         </xsl:if>
 
         <!-- within the webwork there is some element and/or attribute that necessitates a macro -->
-        <!-- TODO: starting with PG 2.19, niceTables.pl is always loaded by PGML.pl. Once we no  -->
-        <!-- longer support 2.18 or earlier, we can remove this niceTables test.                 -->
-        <xsl:if test=".//tabular">
-            <xsl:call-template name="macro-padding">
-                <xsl:with-param name="string" select="'niceTables.pl'"/>
-            </xsl:call-template>
-        </xsl:if>
         <xsl:if test=".//image[@pg-name]">
             <xsl:call-template name="macro-padding">
                 <xsl:with-param name="string" select="'PGgraphmacros.pl'"/>
@@ -921,7 +914,7 @@
                     <xsl:message>PTX:WARNING: the WeBWorK PG macro <xsl:value-of select="$trimmed-macro"/> is always included for every problem as a dependency of PGstandard.pl</xsl:message>
                     <xsl:apply-templates select="." mode="location-report" />
                 </xsl:when>
-                <xsl:when test="$trimmed-macro = 'Parser.pl' or $trimmed-macro = 'MathObjects.pl' or $trimmed-macro = 'contextTypeset.pl'">
+                <xsl:when test="$trimmed-macro = 'Parser.pl' or $trimmed-macro = 'MathObjects.pl' or $trimmed-macro = 'contextTypeset.pl' or $trimmed-macro = 'niceTables.pl'">
                     <xsl:message>PTX:WARNING: the WeBWorK PG macro <xsl:value-of select="$trimmed-macro"/> is always included for every problem as a dependency of PGML.pl</xsl:message>
                     <xsl:apply-templates select="." mode="location-report" />
                 </xsl:when>
