@@ -28,7 +28,6 @@ loadMacros(
   "PGstandard.pl",
   "PGML.pl",
   "AnswerFormatHelp.pl",
-  "niceTables.pl",
   "PGgraphmacros.pl",
   "WWSC.pl",
   "PGcourse.pl",
