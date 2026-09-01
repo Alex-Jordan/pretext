@@ -56,19 +56,16 @@ END_LATEX_IMAGE
 BEGIN_PGML
 This introduction should appear ahead of the exercise when it shows up in the Assignment page.
 
->> [@DataTable(
-  [
-    [
-     PGML('[`(0,0)`]'),
-     PGML('[`(0,1)`]'),
-    ],
-    [
-     PGML('[`(1,0)`]'),
-     PGML('[`(1,1)`]'),
-    ],
-  ],
+[#
+    [.[`(0,0)`].]
+    [.[`(0,1)`].]*
+
+    [.[`(1,0)`].]
+    [.[`(1,1)`].]
+#]{
       align => '*{2}{l}',
-      valign => 'middle',);@]* <<
+      valign => 'middle',
+}
 
 >> [@image(insertGraph($introduction_image_1), width=>600, alt=>qq"a blue square")@]*  <<
 

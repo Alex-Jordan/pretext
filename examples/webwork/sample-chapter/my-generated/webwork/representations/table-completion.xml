@@ -2,7 +2,6 @@
 <webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="21" xml:id="extracted-table-completion" assembly-id="table-completion">
   <static seed="62">
     <statement><p>Complete this multiplication table.</p>
-<!-- PTX:WARNING: PGML wanted to center align here. -->
 <tabular>
 <col halign="right" right="major"/>
 <col halign="center" right="minor"/>
@@ -14,17 +13,13 @@
 </row>
 <row bottom="minor">
 <cell><m>6</m></cell>
-<cell><fillin characters="5" name="AnSwEr0001"/>
-</cell>
-<cell><fillin characters="5" name="AnSwEr0002"/>
-</cell>
+<cell><fillin characters="5" name="AnSwEr0001"/></cell>
+<cell><fillin characters="5" name="AnSwEr0002"/></cell>
 </row>
 <row bottom="minor">
 <cell><m>9</m></cell>
-<cell><fillin characters="5" name="AnSwEr0003"/>
-</cell>
-<cell><fillin characters="5" name="AnSwEr0004"/>
-</cell>
+<cell><fillin characters="5" name="AnSwEr0003"/></cell>
+<cell><fillin characters="5" name="AnSwEr0004"/></cell>
 </row>
 </tabular>
 </statement>
@@ -48,8 +43,7 @@
         <m>54</m>
       </p>
     </answer>
-    <solution><!-- PTX:WARNING: PGML wanted to center align here. -->
-<tabular>
+    <solution><tabular>
 <col halign="right" right="major"/>
 <col halign="center" right="minor"/>
 <col halign="center" right="minor"/>
@@ -124,32 +118,28 @@ for my$i(0..3){$p[$i]=$a[int($i/2)]*$b[$i % 2]};
 BEGIN_PGML
 Complete this multiplication table.
 
->> [@DataTable(
-  [
-    [
-     [PGML('[`\times`]'),
+[#
+    [.[`\times`].]{
       rowbottom => '3',
-      midrule => '1',],
-     PGML('[`[$a[0]]`]'),
-     PGML('[`[$a[1]]`]'),
-    ],
-    [
-     [PGML('[`[$b[0]]`]'),
+    }
+    [.[`[$a[0]]`].]
+    [.[`[$a[1]]`].]*
+
+    [.[`[$b[0]]`].]{
       rowbottom => '1',
-      midrule => '1',],
-     PGML('[_]{$p[0]}{5}'),
-     PGML('[_]{$p[2]}{5}'),
-    ],
-    [
-     [PGML('[`[$b[1]]`]'),
+    }
+    [.[_]{$p[0]}{5}.]
+    [.[_]{$p[2]}{5}.]*
+
+    [.[`[$b[1]]`].]{
       rowbottom => '1',
-      midrule => '1',],
-     PGML('[_]{$p[1]}{5}'),
-     PGML('[_]{$p[3]}{5}'),
-    ],
-  ],
+    }
+    [.[_]{$p[1]}{5}.]
+    [.[_]{$p[3]}{5}.]
+#]{
       align => 'r!{\vrule width 0.11em}c|c|',
-      valign => 'middle',);@]* <<
+      valign => 'middle',
+}
 
 END_PGML
 
@@ -158,32 +148,28 @@ END_PGML
 ##########
 
 BEGIN_PGML_SOLUTION
->> [@DataTable(
-  [
-    [
-     [PGML('[`\times`]'),
+[#
+    [.[`\times`].]{
       rowbottom => '3',
-      midrule => '1',],
-     PGML('[`[$a[0]]`]'),
-     PGML('[`[$a[1]]`]'),
-    ],
-    [
-     [PGML('[`[$b[0]]`]'),
+    }
+    [.[`[$a[0]]`].]
+    [.[`[$a[1]]`].]*
+
+    [.[`[$b[0]]`].]{
       rowbottom => '1',
-      midrule => '1',],
-     PGML('[`[$p[0]]`]'),
-     PGML('[`[$p[2]]`]'),
-    ],
-    [
-     [PGML('[`[$b[1]]`]'),
+    }
+    [.[`[$p[0]]`].]
+    [.[`[$p[2]]`].]*
+
+    [.[`[$b[1]]`].]{
       rowbottom => '1',
-      midrule => '1',],
-     PGML('[`[$p[1]]`]'),
-     PGML('[`[$p[3]]`]'),
-    ],
-  ],
+    }
+    [.[`[$p[1]]`].]
+    [.[`[$p[3]]`].]
+#]{
       align => 'r!{\vrule width 0.11em}c|c|',
-      valign => 'middle',);@]* <<
+      valign => 'middle',
+}
 
 END_PGML_SOLUTION
 

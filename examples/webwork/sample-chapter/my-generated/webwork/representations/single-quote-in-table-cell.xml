@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="21" xml:id="extracted-single-quote-in-table-cell" assembly-id="single-quote-in-table-cell">
   <static seed="88">
-    <statement><!-- PTX:WARNING: PGML wanted to center align here. -->
-<tabular>
+    <statement><tabular>
 <col/>
 <row>
 <cell>What<rsq/>s up, Doc?</cell>
@@ -58,14 +57,12 @@ Context('Numeric');
 ######
 
 BEGIN_PGML
->> [@DataTable(
-  [
-    [
-     PGML(q"What's up, Doc?"),
-    ],
-  ],
+[#
+    [.What's up, Doc?.]
+#]{
       align => '*{1}{l}',
-      valign => 'middle',);@]* <<
+      valign => 'middle',
+}
 
 END_PGML
 
