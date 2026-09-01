@@ -2,7 +2,6 @@
 <webwork-reps version="2" webwork2_major_version="2" webwork2_minor_version="21" xml:id="extracted-tables" assembly-id="tables">
   <static seed="82">
     <statement><p>A table with minimal XML source.</p>
-<!-- PTX:WARNING: PGML wanted to center align here. -->
 <tabular>
 <col/>
 <col/>
@@ -24,9 +23,8 @@
 </row>
 </tabular>
 <p>Finish this table.</p>
-<!-- PTX:WARNING: PGML wanted to center align here. -->
-<tabular left="major">
-<col halign="right" right="minor"/>
+<tabular left="major" top="major">
+<col halign="right" right="minor" top="minor"/>
 <col halign="center" right="medium"/>
 <col right="minor"/>
 <row left="none">
@@ -35,10 +33,15 @@
 <cell><m>\lfloor\pi\rfloor</m></cell>
 </row>
 <row bottom="major" valign="bottom">
-<cell bottom="minor"><m>\text{I}+\text{I}</m>
-<m>{}+\text{I}+\text{I}</m></cell>
-<cell><fillin characters="5" name="AnSwEr0001"/>
+<cell bottom="minor">
+<line>
+<m>\text{I}+\text{I}</m>
+</line>
+<line>
+<m>{}+\text{I}+\text{I}</m>
+</line>
 </cell>
+<cell><fillin characters="5" name="AnSwEr0001"/></cell>
 <cell>six</cell>
 </row>
 <row bottom="major">
@@ -106,59 +109,53 @@ $x = Real(5);
 BEGIN_PGML
 A table with minimal XML source.
 
->> [@DataTable(
-  [
-    [
-     PGML('A'),
-     PGML('B'),
-     PGML('C'),
-    ],
-    [
-     PGML('D'),
-     PGML('E'),
-     PGML('F'),
-    ],
-    [
-     PGML('G'),
-     PGML('H'),
-     PGML('I'),
-    ],
-  ],
+[#
+    [.A.]
+    [.B.]
+    [.C.]*
+
+    [.D.]
+    [.E.]
+    [.F.]*
+
+    [.G.]
+    [.H.]
+    [.I.]
+#]{
       align => '*{3}{l}',
-      valign => 'middle',);@]* <<
+      valign => 'middle',
+}
 
 Finish this table.
 
->> [@DataTable(
-  [
-    [
-     [PGML('1'),
-      halign => 'r',],
-     PGML('two'),
-     PGML('[`\lfloor\pi\rfloor`]'),
-    ],
-    [
-     [PGML('[`\text{I}+\text{I}`]  
-[`{}+\text{I}+\text{I}`]  
-'),
+[#
+    [.1.]{
+      rowtop => '3',
+      top => '1',
+      halign => 'r',
+    }
+    [.two.]
+    [.[`\lfloor\pi\rfloor`].]*
+
+    [.[`\text{I}+\text{I}`]  
+[`{}+\text{I}+\text{I}`].]{
       rowbottom => '3',
-      midrule => '1',
       bottom => '1',
-      valign => 'bottom',],
-     PGML('[_]{$x}{5}'),
-     PGML('six'),
-    ],
-    [
-     [PGML('[`2^3-1`]'),
+      valign => 'bottom',
+    }
+    [.[_]{$x}{5}.]
+    [.six.]*
+
+    [.[`2^3-1`].]{
       rowbottom => '3',
-      midrule => '1',],
-     [PGML('VIII'),
-      colspan => '2',],
-    ],
-  ],
+    }
+    [.VIII.]{
+      colspan => '2',
+    }
+#]{
       align => '!{\vrule width 0.11em}r|c!{\vrule width 0.07em}l|',
       valign => 'middle',
-      top => '3',);@]* <<
+}
 
 END_PGML
 

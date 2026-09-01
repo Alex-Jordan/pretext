@@ -44,14 +44,12 @@ Context('Numeric');
 ######
 
 BEGIN_PGML
->> [@DataTable(
-  [
-    [
-     PGML(q"What's up, Doc?"),
-    ],
-  ],
+[#
+    [.What's up, Doc?.]
+#]{
       align => '*{1}{l}',
-      valign => 'middle',);@]* <<
+      valign => 'middle',
+}
 
 END_PGML
 

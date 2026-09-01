@@ -62,68 +62,63 @@ a.  Structured item
 
 a.  Structured item
 
-    [@DataTable(
-      [
-        [
-         PGML('a'),
-         PGML('b'),
-        ],
-        [
-         PGML('c'),
-         PGML('d'),
-        ],
-      ],
-          align => '*{2}{l}',
-          valign => 'middle',    );@]*
+    [#
+        [.a.]
+        [.b.]*
 
-a.  [@DataTable(
-      [
-        [
-         [PGML('1'),
-          halign => 'r',],
-         PGML('two'),
-         PGML('[`\lfloor\pi\rfloor`]'),
-        ],
-        [
-         [PGML('[`\text{I}+\text{I}`]  
-[`{}+\text{I}+\text{I}`]  
-'),
+        [.c.]
+        [.d.]
+    #]{
+          center => '0',
+          align => '*{2}{l}',
+          valign => 'middle',
+    }
+
+a.  [#
+        [.1.]{
+          rowtop => '3',
+          top => '1',
+          halign => 'r',
+    }
+        [.two.]
+        [.[`\lfloor\pi\rfloor`].]*
+
+        [.[`\text{I}+\text{I}`]  
+[`{}+\text{I}+\text{I}`].]{
           rowbottom => '3',
-          midrule => '1',
           bottom => '1',
-          valign => 'bottom',],
-         PGML('[`5`]'),
-         PGML('six'),
-        ],
-        [
-         [PGML('[`2^3-1`]'),
+          valign => 'bottom',
+    }
+        [.[`5`].]
+        [.six.]*
+
+        [.[`2^3-1`].]{
           rowbottom => '3',
-          midrule => '1',],
-         [PGML('VIII'),
-          colspan => '2',],
-        ],
-      ],
+    }
+        [.VIII.]{
+          colspan => '2',
+    }
+    #]{
+          center => '0',
           align => '!{\vrule width 0.11em}r|c!{\vrule width 0.07em}l|',
           valign => 'middle',
-          top => '3',    );@]*
+    }
 
 Structured item
 
 a.  Structured item
 
-    [@DataTable(
-      [
-        [
-         PGML('a'),
-         PGML('b'),
-        ],
-        [
-         PGML('c'),
-         PGML('d'),
-        ],
-      ],
+    [#
+        [.a.]
+        [.b.]*
+
+        [.c.]
+        [.d.]
+    #]{
+          center => '0',
           align => '*{2}{l}',
-          valign => 'middle',    );@]*
+          valign => 'middle',
+    }
 
     Second paragraph
 

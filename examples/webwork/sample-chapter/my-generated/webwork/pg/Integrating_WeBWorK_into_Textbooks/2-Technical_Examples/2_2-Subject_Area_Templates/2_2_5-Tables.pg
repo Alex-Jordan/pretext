@@ -47,59 +47,53 @@ $x = Real(5);
 BEGIN_PGML
 A table with minimal XML source.
 
->> [@DataTable(
-  [
-    [
-     PGML('A'),
-     PGML('B'),
-     PGML('C'),
-    ],
-    [
-     PGML('D'),
-     PGML('E'),
-     PGML('F'),
-    ],
-    [
-     PGML('G'),
-     PGML('H'),
-     PGML('I'),
-    ],
-  ],
+[#
+    [.A.]
+    [.B.]
+    [.C.]*
+
+    [.D.]
+    [.E.]
+    [.F.]*
+
+    [.G.]
+    [.H.]
+    [.I.]
+#]{
       align => '*{3}{l}',
-      valign => 'middle',);@]* <<
+      valign => 'middle',
+}
 
 Finish this table.
 
->> [@DataTable(
-  [
-    [
-     [PGML('1'),
-      halign => 'r',],
-     PGML('two'),
-     PGML('[`\lfloor\pi\rfloor`]'),
-    ],
-    [
-     [PGML('[`\text{I}+\text{I}`]  
-[`{}+\text{I}+\text{I}`]  
-'),
+[#
+    [.1.]{
+      rowtop => '3',
+      top => '1',
+      halign => 'r',
+    }
+    [.two.]
+    [.[`\lfloor\pi\rfloor`].]*
+
+    [.[`\text{I}+\text{I}`]  
+[`{}+\text{I}+\text{I}`].]{
       rowbottom => '3',
-      midrule => '1',
       bottom => '1',
-      valign => 'bottom',],
-     PGML('[_]{$x}{5}'),
-     PGML('six'),
-    ],
-    [
-     [PGML('[`2^3-1`]'),
+      valign => 'bottom',
+    }
+    [.[_]{$x}{5}.]
+    [.six.]*
+
+    [.[`2^3-1`].]{
       rowbottom => '3',
-      midrule => '1',],
-     [PGML('VIII'),
-      colspan => '2',],
-    ],
-  ],
+    }
+    [.VIII.]{
+      colspan => '2',
+    }
+#]{
       align => '!{\vrule width 0.11em}r|c!{\vrule width 0.07em}l|',
       valign => 'middle',
-      top => '3',);@]* <<
+}
 
 END_PGML
 
